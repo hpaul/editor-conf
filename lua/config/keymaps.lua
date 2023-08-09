@@ -19,10 +19,6 @@ end
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- With this you can use >< multiple time for changng indent when you visual selected text.
-map("v", "<", "<gv", { noremap = true })
-map("v", ">", ">gv", { noremap = true })
-
 -- Keymap for adding space lines below and above the cursor
 vim.cmd [[
 nnoremap <silent> ]<Space> :<C-u>put =repeat(nr2char(10),v:count)<Bar>execute "'[-1"<CR>
@@ -40,7 +36,7 @@ vim.cmd([[
   cmap Qa1 qa!
 ]])
 
--- Move to window using the <ctrl> hjkl keys
+-- Move to window using the <alt> hjkl keys
 map({"n", "i", "x" }, "<M-h>", "<C-w>h", { desc = "Go to left window", remap = true })
 map({"n", "i", "x" }, "<M-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
 map({"n", "i", "x" }, "<M-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
@@ -53,12 +49,12 @@ map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window wi
 map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- Move Lines
--- map("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move down" })
--- map("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move up" })
--- map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
--- map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
--- map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
--- map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+map("n", "<A-Up>", "<cmd>m .-2<cr>==", { desc = "Move up" })
+map("n", "<A-Down>", "<cmd>m .+1<cr>==", { desc = "Move down" })
+map("i", "<A-Down>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
+map("i", "<A-Up>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
+map("v", "<A-Down>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
+map("v", "<A-Up>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
 -- buffers
 map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })

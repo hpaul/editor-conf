@@ -131,7 +131,6 @@ end
 ---@param name "autocmds" | "options" | "keymaps"
 function M.load(name)
   local Util = require("lazy.core.util")
-  Util.error(name)
   local function _load(mod)
     Util.try(function()
       require(mod)

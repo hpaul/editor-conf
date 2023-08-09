@@ -20,7 +20,7 @@ return {
         },
         sections = {
           lualine_a = { "mode" },
-          lualine_b = { "branch" },
+          lualine_b = { "branch", "diff" },
           lualine_c = {
             {
               "diagnostics",
@@ -59,14 +59,6 @@ return {
               color = Util.fg("Debug"),
             },
             { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
-            {
-              "diff",
-              symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
-              },
-            },
           },
           lualine_y = {
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
@@ -135,6 +127,41 @@ return {
           vim.b.miniindentscope_disable = true
         end,
       })
+    end,
+  },
+  -- animations
+  {
+    "echasnovski/mini.animate",
+    event = "VeryLazy",
+    opts = function()
+      -- don't use animate when scrolling with the mouse
+      local mouse_scrolled = false
+      for _, scroll in ipairs({ "Up", "Down" }) do
+        local key = "<ScrollWheel" .. scroll .. ">"
+        vim.keymap.set({ "", "i" }, key, function()
+          mouse_scrolled = true
+          return key
+        end, { expr = true })
+      end
+
+      local animate = require("mini.animate")
+      return {
+        resize = {
+          timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+        },
+        scroll = {
+          timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
+          subscroll = animate.gen_subscroll.equal({
+            predicate = function(total_scroll)
+              if mouse_scrolled then
+                mouse_scrolled = false
+                return false
+              end
+              return total_scroll > 1
+            end,
+          }),
+        },
+      }
     end,
   },
 }
