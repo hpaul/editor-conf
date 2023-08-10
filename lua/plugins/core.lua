@@ -13,4 +13,4 @@ return {
       require("lazyvim.config").setup(opts)
     end,
   }
-} 
+}

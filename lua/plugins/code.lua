@@ -145,13 +145,6 @@ return {
             name = 'buffer',
             option = {
               keyword_length = 3,
-              -- get_bufnrs = function()
-              --   local bufs = {}
-              --   for _, win in ipairs(vim.api.nvim_list_wins()) do
-              --     bufs[vim.api.nvim_win_get_buf(win)] = true
-              --   end
-              --   return vim.tbl_keys(bufs)
-              -- end
               get_bufnrs = function()
                 local bufs = {}
                 for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -173,19 +166,9 @@ return {
               context_after = 3,
             },
             keyword_length = 5
-
           },
           { name = "path" },
         }),
-        formatting = {
-          format = function(_, item)
-            local icons = require("lazyvim.config").icons.kinds
-            if icons[item.kind] then
-              item.kind = icons[item.kind] .. item.kind
-            end
-            return item
-          end,
-        },
         formatting = {
           format = lspkind.cmp_format({
             mode = 'symbol_text', -- show only symbol annotations

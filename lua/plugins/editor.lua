@@ -9,6 +9,7 @@ return {
     version = false, -- telescope did only one release, so use HEAD for now
     dependencies = {
       { "nvim-telescope/telescope-fzf-native.nvim", lazy = false, build = "make" },
+      { "nvim-telescope/telescope-fzf-native.nvim", lazy = false, build = "make" },
     },
     keys = {
       { "<leader>fb", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
@@ -83,82 +84,83 @@ return {
         desc = "Goto Symbol (Workspace)",
       },
     },
-    opts = {
-      defaults = {
-        layout_strategy = 'bottom_pane',
-        layout_config = {
-          height = 0.65,
-          mirror = false,
-          prompt_position = 'bottom',
-        },
-        selection_strategy = 'closest',
-        dynamic_preview_title = true,
-        color_devicons = true,
-        set_env = { COLORTERM = 'truecolor' },
-        vimgrep_arguments = {
-          "rg",
-          "--color=never",
-          "--column",
-          "--hidden",
-          "--line-number",
-          "--no-heading",
-          "--smart-case",
-          "--with-filename",
-        },
-        prompt_prefix = " ",
-        selection_caret = " ",
-        mappings = {
-          i = {
-            ["<c-t>"] = function(...)
-              return require("trouble.providers.telescope").open_with_trouble(...)
-            end,
-            ["<a-t>"] = function(...)
-              return require("trouble.providers.telescope").open_selected_with_trouble(...)
-            end,
-            ["<a-i>"] = function()
-              local action_state = require("telescope.actions.state")
-              local line = action_state.get_current_line()
-              Util.telescope("find_files", { no_ignore = true, default_text = line })()
-            end,
-            ["<a-h>"] = function()
-              local action_state = require("telescope.actions.state")
-              local line = action_state.get_current_line()
-              Util.telescope("find_files", { hidden = true, default_text = line })()
-            end,
-            ["<C-Down>"] = function(...)
-              return require("telescope.actions").cycle_history_next(...)
-            end,
-            ["<C-Up>"] = function(...)
-              return require("telescope.actions").cycle_history_prev(...)
-            end,
-            ["<C-f>"] = function(...)
-              return require("telescope.actions").preview_scrolling_down(...)
-            end,
-            ["<C-b>"] = function(...)
-              return require("telescope.actions").preview_scrolling_up(...)
-            end,
+
+    config = function()
+      vim.cmd "autocmd User TelescopePreviewerLoaded setlocal number"
+      require('telescope').setup {
+        defaults = {
+          layout_strategy = 'vertical',
+          layout_config = {
+            height = 0.75,
+            mirror = true,
+            prompt_position = 'top',
           },
-          n = {
-            ["q"] = function(...)
-              return require("telescope.actions").close(...)
-            end,
+          selection_strategy = 'closest',
+          sorting_strategy = 'ascending',
+          dynamic_preview_title = true,
+          scroll_strategy = "limit",
+          color_devicons = true,
+          set_env = { COLORTERM = 'truecolor' },
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--column",
+            "--hidden",
+            "--line-number",
+            "--no-heading",
+            "--smart-case",
+            "--with-filename",
+          },
+          prompt_prefix = " ",
+          selection_caret = " ",
+          mappings = {
+            i = {
+              ["<c-t>"] = function(...)
+                return require("trouble.providers.telescope").open_with_trouble(...)
+              end,
+              ["<a-t>"] = function(...)
+                return require("trouble.providers.telescope").open_selected_with_trouble(...)
+              end,
+              ["<a-i>"] = function()
+                local action_state = require("telescope.actions.state")
+                local line = action_state.get_current_line()
+                Util.telescope("find_files", { no_ignore = true, default_text = line })()
+              end,
+              ["<a-h>"] = function()
+                local action_state = require("telescope.actions.state")
+                local line = action_state.get_current_line()
+                Util.telescope("find_files", { hidden = true, default_text = line })()
+              end,
+              ["<C-Down>"] = function(...)
+                return require("telescope.actions").cycle_history_next(...)
+              end,
+              ["<C-Up>"] = function(...)
+                return require("telescope.actions").cycle_history_prev(...)
+              end,
+              ["<C-f>"] = function(...)
+                return require("telescope.actions").preview_scrolling_down(...)
+              end,
+              ["<C-b>"] = function(...)
+                return require("telescope.actions").preview_scrolling_up(...)
+              end,
+            },
+            n = {
+              ["q"] = function(...)
+                return require("telescope.actions").close(...)
+              end,
+            },
           },
         },
-      },
-      extensions = {
-        fzf = {
-          fuzzy = true, -- false will only do exact matching
-          override_generic_sorter = true, -- override the generic sorter
-          override_file_sorter = true, -- override the file sorter
-          case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-          -- the default case_mode is "smart_case"
+        extensions = {
+          fzf = {
+            fuzzy = true, -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            -- the default case_mode is "smart_case"
+          }
         }
       }
-    },
-    config = function()
-      local telescope = require('telescope')
-      -- telescope.load_extension('env')
-      telescope.load_extension('fzf')
     end
   },
   -- Flash enhances the built-in search functionality by showing labels

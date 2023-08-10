@@ -12,8 +12,9 @@ return {
   -- Session management. This saves your session in the background,
   {
     "rmagatti/auto-session",
-    event = "BufReadPre",
+    event = "VimEnter",
     lazy = false,
+
     opts = {
       auto_session_enable_last_session = false,
       auto_session_enabled             = true,

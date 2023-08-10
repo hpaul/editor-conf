@@ -17,6 +17,8 @@ return {
     },
     ---@class PluginLspOpts
     opts = {
+      -- ui
+      ui = { },
       -- options for vim.diagnostic.config()
       diagnostics = {
         underline = true,
@@ -201,6 +203,7 @@ return {
           return not is_deno(root_dir)
         end)
       end
+      require('lspconfig.ui.windows').default_options.border = 'single'
     end,
   },
 
