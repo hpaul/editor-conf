@@ -3,6 +3,10 @@ local M = {}
 ---@type PluginLspKeys
 M._keys = nil
 
+local function with_border(fn)
+  return vim.lsp.with(fn, { border = "single" })
+end
+
 ---@return (LazyKeys|{has?:string})[]
 function M.get()
   local format = function()
@@ -12,16 +16,16 @@ function M.get()
   ---@class PluginLspKeys
     -- stylua: ignore
     M._keys =  {
-      { "<leader>cd", vim.diagnostic.open_float, desc = "Line Diagnostics" },
+      { "<leader>cd", with_border(vim.diagnostic.open_float), desc = "Line Diagnostics" },
       { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
       { "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end, desc = "Goto Definition", has = "definition" },
       { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
-      { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
+      { "gD", with_border(vim.lsp.buf.declaration), desc = "Goto Declaration" },
       { "gI", function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end, desc = "Goto Implementation" },
       { "gy", function() require("telescope.builtin").lsp_type_definitions({ reuse_win = true }) end, desc = "Goto T[y]pe Definition" },
-      { "K", vim.lsp.buf.hover, desc = "Hover" },
-      { "gK", vim.lsp.buf.signature_help, desc = "Signature Help", has = "signatureHelp" },
-      { "<c-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help", has = "signatureHelp" },
+      { "K", with_border(vim.lsp.buf.hover), desc = "Hover" },
+      { "gK", with_border(vim.lsp.buf.signature_help), desc = "Signature Help", has = "signatureHelp" },
+      { "<c-k>", with_border(vim.lsp.buf.signature_help), mode = "i", desc = "Signature Help", has = "signatureHelp" },
       { "]d", M.diagnostic_goto(true), desc = "Next Diagnostic" },
       { "[d", M.diagnostic_goto(false), desc = "Prev Diagnostic" },
       { "]e", M.diagnostic_goto(true, "ERROR"), desc = "Next Error" },

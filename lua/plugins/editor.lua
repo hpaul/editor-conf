@@ -18,8 +18,8 @@ return {
       { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
       -- find
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
-      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
+      -- { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
+      { "<leader>ff", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
       { "<leader>fR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent (cwd)" },
       -- git
@@ -212,6 +212,10 @@ return {
         mappings = { n = { s = flash }, i = { ["<c-s>"] = flash } },
       })
     end,
+  },
+
+  {
+    "tpope/vim-sleuth",
   },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage

@@ -78,15 +78,7 @@ return {
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
       ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        -- tsserver = function(_, opts)
-        --   require("typescript").setup({ server = opts })
-        --   return true
-        -- end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
+      setup = { },
     },
     ---@param opts PluginLspOpts
     config = function(_, opts)
@@ -111,7 +103,7 @@ return {
         ---@type lsp.Client
         local client = vim.lsp.get_client_by_id(client_id)
         local buffer = vim.api.nvim_get_current_buf()
-        require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
+        require("plugins.lsp.keymaps").on_attach(client, buffer)
         return ret
       end
 
@@ -217,8 +209,6 @@ return {
       return {
         root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
         sources = {
-          nls.builtins.formatting.fish_indent,
-          nls.builtins.diagnostics.fish,
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
           -- nls.builtins.diagnostics.flake8,

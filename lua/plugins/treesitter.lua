@@ -19,6 +19,7 @@ return {
           load_textobjects = true
         end,
       },
+      { "windwp/nvim-ts-autotag" }
     },
     cmd = { "TSUpdateSync" },
     keys = {
@@ -49,6 +50,7 @@ return {
         "vim",
         "vimdoc",
         "yaml",
+        "glimmer"
       },
       incremental_selection = {
         enable = true,
@@ -59,6 +61,9 @@ return {
           node_decremental = "<bs>",
         },
       },
+      autotag = {
+        enable = true
+      }
     },
     ---@param opts TSConfig
     config = function(_, opts)

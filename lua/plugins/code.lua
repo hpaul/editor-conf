@@ -49,7 +49,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
-    event = "InsertEnter",
+    lazy = false,
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -57,6 +57,7 @@ return {
       "saadparwaiz1/cmp_luasnip",
       "L3MON4D3/LuaSnip",
       "onsails/lspkind.nvim",
+      "lukas-reineke/cmp-rg"
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
@@ -69,7 +70,7 @@ return {
         window = {
           completion = { -- rounded border; thin-style scrollbar
             border = border,
-            -- scrollbar = '║',
+            scrollbar = '║',
           },
           documentation = { -- no border; native-style scrollbar
             border = border,
@@ -92,12 +93,19 @@ return {
           ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
+
+          ["<C-Space>"] = cmp.mapping({
+            i = function()
+              cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+            end,
+            n = cmp.mapping.complete(),
+          }),
+
           ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping({
             i = function(fallback)
               if cmp.visible() and cmp.get_active_entry() then
-                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
               else
                 fallback()
               end

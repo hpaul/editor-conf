@@ -5,7 +5,7 @@ return {
     priority = 1000,
     config = function()
       require("nebulous").setup({
-        variant = "nova",
+        variant = "fullmoon",
         disable = {
           background = false,
           endOfBuffer = false,
@@ -14,7 +14,7 @@ return {
         italic = {
           comments   = true,
           keywords   = true,
-          functions  = true,
+          functions  = false,
           variables  = true,
         },
         -- custom_colors = { -- this table can hold any group of colors with their respective values
