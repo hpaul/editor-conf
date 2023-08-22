@@ -86,21 +86,21 @@ return {
     },
 
     config = function()
-      vim.cmd "autocmd User TelescopePreviewerLoaded setlocal number"
-      require('telescope').setup {
+      vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
+      require("telescope").setup({
         defaults = {
-          layout_strategy = 'vertical',
+          layout_strategy = "vertical",
           layout_config = {
             height = 0.75,
             mirror = true,
-            prompt_position = 'top',
+            prompt_position = "top",
           },
-          selection_strategy = 'closest',
-          sorting_strategy = 'ascending',
+          selection_strategy = "closest",
+          sorting_strategy = "ascending",
           dynamic_preview_title = true,
           scroll_strategy = "limit",
           color_devicons = true,
-          set_env = { COLORTERM = 'truecolor' },
+          set_env = { COLORTERM = "truecolor" },
           vimgrep_arguments = {
             "rg",
             "--color=never",
@@ -158,10 +158,10 @@ return {
             override_file_sorter = true, -- override the file sorter
             case_mode = "smart_case", -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
-          }
-        }
-      }
-    end
+          },
+        },
+      })
+    end,
   },
   -- Flash enhances the built-in search functionality by showing labels
   -- at the end of each match, letting you quickly jump to a specific
@@ -213,10 +213,17 @@ return {
       })
     end,
   },
+  { "tpope/vim-sleuth" },
+  { "andymass/vim-matchup", lazy = false },
 
+  -- Git integration
   {
-    "tpope/vim-sleuth",
+    "tpope/vim-fugitive",
+    lazy = false,
+    config = function() end,
+    keys = {},
   },
+  { "tpope/vim-rhubarb" },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
   -- hunks in a commit.
@@ -232,9 +239,10 @@ return {
         changedelete = { text = "▎" },
         untracked = { text = "▎" },
       },
+      word_diff = true,
+      current_line_blame = true,
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
-
         local function map(mode, l, r, desc)
           vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
         end
@@ -242,16 +250,17 @@ return {
         -- stylua: ignore start
         map("n", "]h", gs.next_hunk, "Next Hunk")
         map("n", "[h", gs.prev_hunk, "Prev Hunk")
-        map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+        -- May or may be not usefull, I have to advance my git understanding and flow
+        -- map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+        -- map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+        -- map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
+        -- map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
+        -- map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
+        -- map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
+        -- map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+        -- map("n", "<leader>ghd", gs.diffthis, "Diff This")
+        -- map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+        -- map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     },
   },
@@ -265,7 +274,7 @@ return {
     "RRethy/vim-illuminate",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      delay = 200,
+      delay = 100,
       large_file_cutoff = 2000,
       large_file_overrides = {
         providers = { "lsp" },
