@@ -1,7 +1,10 @@
 require("lazyvim.config").init()
 
 return {
-  { "folke/lazy.nvim", version = "*" },
+  {
+    "folke/lazy.nvim",
+    version = "*",
+  },
   {
     -- measure startuptime and intialize
     "dstein64/vim-startuptime",
@@ -11,6 +14,9 @@ return {
       vim.g.startuptime_tries = 10
       opts = opts or {}
       require("lazyvim.config").setup(opts)
+      -- Change color scheme to one which is great by default
+      -- vim.cmd [[ colorscheme slate ]]
+      -- vim.cmd [[ hi WinSeparator ctermbg=none cterm=none ctermfg=none ]]
     end,
   }
 }

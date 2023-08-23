@@ -1,7 +1,7 @@
 return {
   { "nvim-tree/nvim-web-devicons", lazy = true },
   {
-    'stevearc/dressing.nvim',
+    "stevearc/dressing.nvim",
     opts = {},
   },
   -- statusline
@@ -14,7 +14,7 @@ return {
 
       return {
         options = {
-          theme = "auto",
+          theme = "material",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha" } },
         },
@@ -31,7 +31,7 @@ return {
                 hint = icons.diagnostics.Hint,
               },
             },
-            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+            { "filetype", icon_only = false, separator = "", padding = { left = 1, right = 0 } },
             { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
             -- stylua: ignore
             {
@@ -79,8 +79,9 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      char = "▏",
+      -- char = "▏",
       -- char = "│",
+      char = "",
       filetype_exclude = {
         "help",
         "alpha",
@@ -95,6 +96,7 @@ return {
       },
       show_trailing_blankline_indent = false,
       show_current_context = false,
+      show_current_context_start = true,
     },
   },
   -- Active indent guide and indent text objects. When you're browsing
@@ -105,7 +107,6 @@ return {
     version = false, -- wait till new 0.7.0 release to put it back on semver
     event = { "BufReadPre", "BufNewFile" },
     opts = {
-      -- symbol = "▏",
       symbol = "│",
       options = { try_as_border = true },
     },

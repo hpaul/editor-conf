@@ -214,6 +214,7 @@ return {
     end,
   },
   { "tpope/vim-sleuth" },
+  { "junegunn/vim-peekaboo", enabled = false },
   { "andymass/vim-matchup", lazy = false },
 
   -- Git integration
@@ -224,6 +225,7 @@ return {
     keys = {},
   },
   { "tpope/vim-rhubarb" },
+  { "sindrets/diffview.nvim" },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
   -- hunks in a commit.

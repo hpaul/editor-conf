@@ -5,6 +5,7 @@ M.lazy_version = ">=9.1.0"
 
 ---@class LazyVimConfig
 local defaults = {
+  colorscheme = "slate",
   -- load the default settings
   defaults = {
     autocmds = true, -- lazyvim.config.autocmds
