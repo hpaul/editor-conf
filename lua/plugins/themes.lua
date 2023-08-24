@@ -29,29 +29,30 @@ return {
   {
     "marko-cerovac/material.nvim",
     lazy = false,
+    enabled = false,
     config = function ()
-
       require('material').setup({
         contrast = {
           terminal = true, -- Enable contrast for the built-in terminal
           sidebars = false, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
-          floating_windows = true, -- Enable contrast for floating windows
-          cursor_line = true, -- Enable darker background for the cursor line
-          non_current_windows = true, -- Enable contrasted background for non-current windows
+          floating_windows = false, -- Enable contrast for floating windows
+          cursor_line = false, -- Enable darker background for the cursor line
+          non_current_windows = false, -- Enable contrasted background for non-current windows
           filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
         },
 
         styles = { -- Give comments style such as bold, italic, underline etc.
-          comments = { --[[ italic = true ]] },
-          strings = { --[[ bold = true ]] },
+          comments = { italic = true },
+          strings = { },
           keywords = { --[[ underline = true ]] },
-          functions = { --[[ bold = true, undercurl = true ]] },
+          functions = { },
           variables = {},
           operators = {},
           types = {},
         },
 
-        plugins = { -- Uncomment the plugins that you use to highlight them
+        plugins = {
+          -- Uncomment the plugins that you use to highlight them
           -- Available plugins:
           -- "dap",
           -- "dashboard",
@@ -81,8 +82,8 @@ return {
         },
 
         high_visibility = {
-          lighter = false, -- Enable higher contrast text for lighter style
-          darker = true -- Enable higher contrast text for darker style
+          lighter = true, -- Enable higher contrast text for lighter style
+          darker = false -- Enable higher contrast text for darker style
         },
 
         lualine_style = "stealth", -- Lualine style ( can be 'stealth' or 'default' )
@@ -94,7 +95,7 @@ return {
         custom_highlights = {}, -- Overwrite highlights with your own
       })
 
-      vim.g.material_style = "oceanic"
+      vim.g.material_style = "lighter"
       vim.cmd [[ colorscheme material ]]
     end
   }

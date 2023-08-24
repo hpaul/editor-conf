@@ -171,11 +171,31 @@ return {
     event = "VeryLazy",
     vscode = true,
     ---@type Flash.Config
-    opts = {},
+    opts = {
+      search = {
+        exclude = {
+          "fugitive"
+        }
+      }
+    },
     -- stylua: ignore
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash" },
+      {
+        "S",
+        mode = { "n", "o", "x" },
+        -- For the moment i don't use this
+        -- function()
+        --   require("flash").treesitter()
+        -- end,
+        desc = "Flash Treesitter"
+      },
       { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
       { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
@@ -215,7 +235,15 @@ return {
   },
   { "tpope/vim-sleuth" },
   { "junegunn/vim-peekaboo", enabled = false },
-  { "andymass/vim-matchup", lazy = false },
+  {
+    "andymass/vim-matchup",
+    lazy = false,
+    setup = function()
+      vim.g.loaded_matchit = 1
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      vim.g.matchup_matchparen_hi_surround_always = 0
+    end,
+  },
 
   -- Git integration
   {
@@ -241,7 +269,7 @@ return {
         changedelete = { text = "▎" },
         untracked = { text = "▎" },
       },
-      word_diff = true,
+      word_diff = false,
       current_line_blame = true,
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns

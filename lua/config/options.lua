@@ -12,7 +12,7 @@ opt.concealcursor = 'nic' -- Show concealed elements when edidting and selecting
 opt.confirm = true -- Confirm to save changes before exiting modified buffer
 opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
-opt.formatoptions = "jcroqlnt" -- tcqj
+opt.formatoptions = "joqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
 opt.ignorecase = true -- Ignore case
@@ -33,7 +33,7 @@ opt.shiftwidth = 2 -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true, S = false })
 opt.showmode = false -- Dont show mode since we have a statusline
 opt.sidescrolloff = 8 -- Columns of context
-opt.wrap = true -- Enable line wrap
+opt.wrap = false -- Enable line wrap
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartindent = true -- Insert indents automatically
 opt.breakindent = true -- Indents word-wrapped lines as much as the 'parent' line

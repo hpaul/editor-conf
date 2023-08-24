@@ -18,10 +18,13 @@ return {
     ---@class PluginLspOpts
     opts = {
       -- ui
-      ui = { },
+      ui = {},
       -- options for vim.diagnostic.config()
       diagnostics = {
-        underline = true,
+        -- Only underline the real error
+        underline = {
+          severity = vim.diagnostic.severity.ERROR,
+        },
         update_in_insert = false,
         virtual_text = {
           spacing = 4,
@@ -30,6 +33,9 @@ return {
           -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
           -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
           -- prefix = "icons",
+        },
+        float = {
+          border = "single",
         },
         severity_sort = true,
       },
@@ -45,7 +51,7 @@ return {
       autoformat = false,
       -- Enable this to show formatters used in a notification
       -- Useful for debugging formatter issues
-      format_notify = false,
+      format_notify = true,
       -- options for vim.lsp.buf.format
       -- `bufnr` and `filter` is handled by the LazyVim formatter,
       -- but can be also overridden when specified
@@ -78,7 +84,7 @@ return {
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
       ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = { },
+      setup = {},
     },
     ---@param opts PluginLspOpts
     config = function(_, opts)
@@ -94,6 +100,12 @@ return {
       Util.on_attach(function(client, buffer)
         require("plugins.lsp.keymaps").on_attach(client, buffer)
       end)
+
+      -- setup borders
+      local lsp_handlers_opts = { border = "single" }
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, lsp_handlers_opts)
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, lsp_handlers_opts)
+      vim.lsp.handlers["textDocument/codeLens"] = vim.lsp.with(vim.lsp.handlers.codeLens, lsp_handlers_opts)
 
       local register_capability = vim.lsp.handlers["client/registerCapability"]
 
@@ -117,7 +129,7 @@ return {
 
       if opts.inlay_hints.enabled and inlay_hint then
         Util.on_attach(function(client, buffer)
-          if client.supports_method('textDocument/inlayHint') then
+          if client.supports_method("textDocument/inlayHint") then
             inlay_hint(buffer, true)
           end
         end)
@@ -195,7 +207,6 @@ return {
           return not is_deno(root_dir)
         end)
       end
-      require('lspconfig.ui.windows').default_options.border = 'single'
     end,
   },
 
@@ -211,6 +222,8 @@ return {
         sources = {
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
+          nls.builtins.code_actions.eslint_d,
+          nls.builtins.diagnostics.eslint_d,
           -- nls.builtins.diagnostics.flake8,
         },
       }
