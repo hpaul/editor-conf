@@ -1,12 +1,12 @@
 local border = {
-    { "╭", "CmpBorder" },
-    { "─", "CmpBorder" },
-    { "╮", "CmpBorder" },
-    { "│", "CmpBorder" },
-    { "╯", "CmpBorder" },
-    { "─", "CmpBorder" },
-    { "╰", "CmpBorder" },
-    { "│", "CmpBorder" },
+  { "╭", "CmpBorder" },
+  { "─", "CmpBorder" },
+  { "╮", "CmpBorder" },
+  { "│", "CmpBorder" },
+  { "╯", "CmpBorder" },
+  { "─", "CmpBorder" },
+  { "╰", "CmpBorder" },
+  { "│", "CmpBorder" },
 }
 
 local has_words_before = function()
@@ -19,7 +19,7 @@ return {
   {
     "L3MON4D3/LuaSnip",
     build = (not jit.os:find("Windows"))
-      and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
+        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
       or nil,
     dependencies = {
       "rafamadriz/friendly-snippets",
@@ -33,13 +33,13 @@ return {
     },
     -- stylua: ignore
     keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true, silent = true, mode = "i",
-      },
+      -- {
+      --   "<tab>",
+      --   function()
+      --     return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+      --   end,
+      --   expr = true, silent = true, mode = "i",
+      -- },
       { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
       { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
@@ -57,28 +57,28 @@ return {
       "saadparwaiz1/cmp_luasnip",
       "L3MON4D3/LuaSnip",
       "onsails/lspkind.nvim",
-      "lukas-reineke/cmp-rg"
+      "lukas-reineke/cmp-rg",
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
-      local cmp_buffer = require('cmp_buffer')
-      local luasnip = require('luasnip')
-      local lspkind = require('lspkind')
+      local cmp_buffer = require("cmp_buffer")
+      local luasnip = require("luasnip")
+      local lspkind = require("lspkind")
       return {
         window = {
           completion = { -- rounded border; thin-style scrollbar
             border = border,
-            scrollbar = '║',
+            scrollbar = "║",
           },
           documentation = { -- no border; native-style scrollbar
             border = border,
-            scrollbar = '║',
+            scrollbar = "║",
           },
         },
         view = {
-          entries = {name = 'custom',},
+          entries = { name = "custom" },
         },
         completion = {
           completeopt = "menu,menuone,noinsert",
@@ -124,7 +124,7 @@ return {
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-              -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
+              -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
               -- they way you will only jump inside the snippet region
             elseif luasnip.expand_or_jumpable() then
               luasnip.expand_or_jump()
@@ -148,9 +148,9 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = 'nvim_lsp_signature_help' },
+          { name = "nvim_lsp_signature_help" },
           {
-            name = 'buffer',
+            name = "buffer",
             option = {
               keyword_length = 3,
               get_bufnrs = function()
@@ -164,26 +164,26 @@ return {
                   end
                 end
                 return vim.tbl_keys(bufs)
-              end
-            }
+              end,
+            },
           },
           {
-            name = 'rg',
+            name = "rg",
             option = {
               context_before = 3,
               context_after = 3,
             },
-            keyword_length = 5
+            keyword_length = 5,
           },
           { name = "path" },
         }),
         formatting = {
           format = lspkind.cmp_format({
-            mode = 'symbol_text', -- show only symbol annotations
+            mode = "symbol_text", -- show only symbol annotations
             preset = "codicons",
             maxwidth = 30, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-            menu = ({
+            ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+            menu = {
               buffer = "[Buffer]",
               nvim_lsp = "[LSP]",
               luasnip = "[LuaSnip]",
@@ -191,9 +191,9 @@ return {
               latex_symbols = "[Latex]",
               emoji = "[Emoji]",
               nerdfont = "[NerdFont]",
-              rg = "[Project]"
-            })
-          })
+              rg = "[Project]",
+            },
+          }),
         },
         experimental = {
           ghost_text = {
@@ -202,8 +202,10 @@ return {
         },
         sorting = {
           comparators = {
-            function(...) return cmp_buffer:compare_locality(...) end,
-          }
+            function(...)
+              return cmp_buffer:compare_locality(...)
+            end,
+          },
         },
       }
     end,
