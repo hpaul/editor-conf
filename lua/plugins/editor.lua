@@ -9,7 +9,6 @@ return {
     version = false, -- telescope did only one release, so use HEAD for now
     dependencies = {
       { "nvim-telescope/telescope-fzf-native.nvim", lazy = false, build = "make" },
-      { "nvim-telescope/telescope-fzf-native.nvim", lazy = false, build = "make" },
     },
     keys = {
       { "<leader>fb", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
@@ -18,8 +17,8 @@ return {
       { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
       -- find
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      -- { "<leader>ff", Util.telescope("files"), desc = "Find Files (root dir)" },
-      { "<leader>ff", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
+      { "<leader>ff", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Find Recent Files (root dir)" },
+      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
       { "<leader>fR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent (cwd)" },
       -- git
@@ -38,8 +37,8 @@ return {
       { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
       { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
       { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
+      { "<leader>sm", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+      { "<leader>sM", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
       { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
       { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
       { "<leader>sw", Util.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },

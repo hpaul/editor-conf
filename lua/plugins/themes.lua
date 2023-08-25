@@ -1,35 +1,8 @@
 return {
   {
-    "Yagua/nebulous.nvim",
-    lazy = false,
-    priority = 1000,
-    enabled = false,
-    config = function()
-      require("nebulous").setup({
-        variant = "fullmoon",
-        disable = {
-          background = false,
-          endOfBuffer = false,
-          terminal_colors = true
-        },
-        italic = {
-          comments   = true,
-          keywords   = true,
-          functions  = false,
-          variables  = true,
-        },
-        custom_colors = { -- this table can hold any group of colors with their respective values
-          -- it is possible to specify only the element to be changed
-          TelescopePreviewBorder = { fg = "#A13413" },
-          LspDiagnosticsDefaultError = { bg = "#E11313" },
-        }
-      })
-    end,
-  },
-  {
     "marko-cerovac/material.nvim",
     lazy = false,
-    enabled = false,
+    enabled = true,
     config = function ()
       require('material').setup({
         contrast = {
@@ -97,6 +70,9 @@ return {
 
       vim.g.material_style = "lighter"
       vim.cmd [[ colorscheme material ]]
+      -- Change color scheme to one which is great by default
+      -- vim.cmd [[ colorscheme slate ]]
+      vim.cmd [[ hi WinSeparator ctermbg=none cterm=none ctermfg=none ]]
     end
   }
 }

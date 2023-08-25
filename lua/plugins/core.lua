@@ -14,9 +14,6 @@ return {
       vim.g.startuptime_tries = 10
       opts = opts or {}
       require("lazyvim.config").setup(opts)
-      -- Change color scheme to one which is great by default
-      vim.cmd [[ colorscheme slate ]]
-      vim.cmd [[ hi WinSeparator ctermbg=none cterm=none ctermfg=none ]]
     end,
   }
 }
