@@ -17,7 +17,7 @@ return {
       { "<leader><space>", Util.telescope("files"), desc = "Find Files (root dir)" },
       -- find
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>ff", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Find Recent Files (root dir)" },
+      { "<leader>ff", Util.telescope("files", { cwd = vim.loop.cwd() }), desc = "Find Recent Files (root dir)" },
       { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
       { "<leader>fR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent (cwd)" },
@@ -200,7 +200,12 @@ return {
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
-
+  {
+    "chentoast/marks.nvim",
+    opts = {
+      default_mappings = true
+    }
+  },
   -- Flash Telescope config
   {
     "nvim-telescope/telescope.nvim",

@@ -74,11 +74,14 @@ return {
   -- indent guides for Neovim
   {
     "lukas-reineke/indent-blankline.nvim",
+    name = "ibl",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      -- char = "▏",
-      -- char = "│",
-      char = "",
+      indent = {
+        highlight = {"Whitespace"},
+        -- char = "▏"
+        char = ""
+      },
       filetype_exclude = {
         "help",
         "alpha",
@@ -92,10 +95,17 @@ return {
         "lazyterm",
         "fugitive",
       },
-      show_trailing_blankline_indent = false,
-      show_current_context = false,
-      show_current_context_start = true,
+      scope = {
+        enabled = true,
+        highlight = {"Function", "Label"},
+        show_start = true,
+        show_end = true,
+        priority = 500,
+      },
     },
+    config = function (_, opts)
+      return require('ibl').setup(opts)
+    end
   },
   -- Active indent guide and indent text objects. When you're browsing
   -- code, this highlights the current level of indentation, and animates
@@ -104,8 +114,9 @@ return {
     "echasnovski/mini.indentscope",
     version = false, -- wait till new 0.7.0 release to put it back on semver
     event = { "BufReadPre", "BufNewFile" },
+    enabled = true,
     opts = {
-      symbol = "│",
+      symbol = "┇",
       options = { try_as_border = true },
     },
     init = function()
