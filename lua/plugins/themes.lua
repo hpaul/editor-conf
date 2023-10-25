@@ -64,7 +64,7 @@ return {
       })
 
       vim.g.material_style = "lighter"
-      vim.cmd [[ colorscheme material ]]
+      vim.cmd [[ colorscheme slate ]]
       -- Change color scheme to one which is great by default
       -- vim.cmd [[ colorscheme slate ]]
       vim.cmd [[ hi WinSeparator ctermbg=none cterm=none ctermfg=none ]]

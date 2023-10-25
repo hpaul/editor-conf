@@ -26,13 +26,13 @@ opt.number = true -- Print line number
 opt.numberwidth = 1 -- How many columns should line number take
 opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
-opt.relativenumber = true -- Relative line numbers
+opt.relativenumber = false -- Relative line numbers
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "winpos", "help" }
 opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true, S = false })
 opt.showmode = false -- Dont show mode since we have a statusline
-opt.sidescrolloff = 8 -- Columns of context
+opt.sidescrolloff = 1 -- Columns of context
 opt.wrap = false -- Enable line wrap
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartindent = true -- Insert indents automatically
@@ -46,19 +46,19 @@ opt.termguicolors = true -- True color support
 opt.undofile = true
 opt.undolevels = 10000
 opt.updatetime = 200 -- Save swap file and trigger CursorHold
-opt.wildmode = "list,full" -- Command-line completion mode
+opt.wildmode = "full" -- Command-line completion mode
 opt.winminwidth = 4 -- Minimum window width
 opt.compatible = false -- Disable old compatibility
 opt.lazyredraw = true -- redraw only when need to
 opt.showmatch = false -- highlight matching [{()}]
 opt.hlsearch = true -- highlight searches
 opt.hidden = true -- allow hidden buffers
-opt.scrolloff = 5 -- show 5 more lines after the current line
+opt.scrolloff = 1 -- show 5 more lines after the current line
 -- Prefer already opened splits when opening a buffer
 opt.switchbuf = "useopen"
 -- Decrease time of completion menu.
 opt.updatetime = 50
-opt.cmdwinheight = 7 -- maximum height of the command window
+opt.cmdwinheight = 10 -- maximum height of the command window
 opt.colorcolumn = { "120" } -- color columns at these offsets
 -- splits open below an to the right
 opt.splitbelow = true
@@ -66,7 +66,7 @@ opt.splitright = true
 opt.linebreak = true
 opt.startofline = true
 -- To be considered
--- opt.statuscolumn = "%@SignCb@%s%=%T%@NumCb@%l│%T"
+opt.statuscolumn = "%@SignCb@%s%=%T%@NumCb@%l│%T"
 
 -- Folding
 opt.foldenable = true -- enable folding

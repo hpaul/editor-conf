@@ -50,7 +50,11 @@ return {
         "vim",
         "vimdoc",
         "yaml",
-        "glimmer"
+        "glimmer",
+        "erlang",
+        "elixir",
+        "heex",
+        "eex"
       },
       incremental_selection = {
         enable = true,

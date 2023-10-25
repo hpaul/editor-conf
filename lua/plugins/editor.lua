@@ -256,7 +256,7 @@ return {
     config = function() end,
     keys = {},
   },
-  { "tpope/vim-rhubarb" },
+  { "tpope/vim-rhubarb", lazy = false },
   { "sindrets/diffview.nvim" },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
