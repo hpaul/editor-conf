@@ -142,4 +142,32 @@ return {
       })
     end,
   },
+  {
+    "winston0410/range-highlight.nvim",
+    dependencies = {
+      "winston0410/cmd-parser.nvim"
+    },
+    lazy = false,
+    opts = {},
+  },
+
+  -- Show a previus UI when navigating through buffers
+  {
+    "ghillb/cybu.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/plenary.nvim" },
+    opts = {
+      position = {
+        -- relative_to = "cursor",
+        -- anchor = "topleft",
+        max_win_height = 15
+      },
+      display_time = 1500,
+    },
+    keys = {
+      { "<S-h>", "<Plug>(CybuPrev)", desc = "Prev buffer" },
+      { "<S-l>", "<Plug>(CybuNext)", desc = "Next buffer" },
+      { "[b", "<Plug>(CybuPrev)", desc = "Prev buffer" },
+      { "]b", "<Plug>(CybuNext)", desc = "Next buffer" },
+    }
+  }
 }

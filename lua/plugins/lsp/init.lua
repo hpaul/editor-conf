@@ -248,6 +248,14 @@ return {
     },
   },
 
+  -- Add some ai tool
+  {
+    "CamdenClark/flyboy",
+    opts = {
+      templates = {}
+    }
+  },
+
   -- cmdline tools and lsp servers
   {
 
