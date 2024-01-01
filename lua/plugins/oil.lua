@@ -12,6 +12,7 @@ return {
       cursorcolumn = false,
       spell = false,
     },
+    skip_confirm_for_simple_edits = false,
     default_file_explorer = true,
     view_options = {
       show_hidden = true,

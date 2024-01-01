@@ -212,7 +212,7 @@ return {
 
   -- formatters
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "mason.nvim" },
     opts = function()
@@ -224,10 +224,28 @@ return {
           nls.builtins.formatting.shfmt,
           nls.builtins.code_actions.eslint_d,
           nls.builtins.diagnostics.eslint_d,
-          -- nls.builtins.diagnostics.flake8,
+          nls.builtins.diagnostics.semgrep,
         },
       }
     end,
+  },
+  -- Add an AI helper bot which asks directly OpenAI GPT details about an diagnostic
+  {
+    "piersolenski/wtf.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+    opts = {},
+    keys = {
+      {
+        "gW",
+        mode = { "n", "x" },
+        function()
+          require("wtf").ai()
+        end,
+        desc = "Debug diagnostic with AI",
+      },
+    },
   },
 
   -- cmdline tools and lsp servers

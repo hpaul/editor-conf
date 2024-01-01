@@ -100,4 +100,11 @@ return {
       end
     end,
   },
+  {
+    "https://gitlab.com/HiPhish/jinja.vim",
+    lazy = false,
+    config = function()
+      vim.cmd [[ autocmd! BufRead,BufNewFile *.html  call jinja#AdjustFiletype() ]]
+    end
+  }
 }

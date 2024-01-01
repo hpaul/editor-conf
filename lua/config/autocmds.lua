@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
   callback = function()
-    vim.highlight.on_yank()
+    vim.highlight.on_yank({ timeout = 300 })
   end,
 })
 
@@ -22,7 +22,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = augroup("resize_splits"),
   callback = function()
-    vim.cmd("tabdo wincmd =")
+    -- disabled until there is something else more reliable
+    -- vim.cmd("tabdo wincmd =")
   end,
 })
 
@@ -75,6 +76,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
+    vim.opt_local.spelllang = {'en_us', 'ro_ro'}
   end,
 })
 

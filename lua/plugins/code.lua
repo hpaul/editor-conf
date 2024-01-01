@@ -18,9 +18,10 @@ return {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    build = (not jit.os:find("Windows"))
-        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-      or nil,
+    build = "make install_jsregexp",
+    -- build = (not jit.os:find("Windows"))
+    --     and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
+    --   or nil,
     dependencies = {
       "rafamadriz/friendly-snippets",
       config = function()
@@ -40,8 +41,8 @@ return {
       --   end,
       --   expr = true, silent = true, mode = "i",
       -- },
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+      -- { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+      -- { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
   },
 
@@ -58,6 +59,7 @@ return {
       "L3MON4D3/LuaSnip",
       "onsails/lspkind.nvim",
       "lukas-reineke/cmp-rg",
+      "f3fora/cmp-spell"
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
@@ -147,8 +149,9 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "luasnip" },
+          { name = "vim-dadbod-completion"},
           { name = "nvim_lsp_signature_help" },
+          { name = "luasnip" },
           {
             name = "buffer",
             option = {
@@ -175,13 +178,22 @@ return {
             },
             keyword_length = 5,
           },
+          {
+            name = 'spell',
+            option = {
+              keep_all_entries = false,
+              enable_in_context = function()
+                return require('cmp.config.context').in_treesitter_capture('spell')
+              end,
+            },
+          },
           { name = "path" },
         }),
         formatting = {
           format = lspkind.cmp_format({
             mode = "symbol_text", -- show only symbol annotations
-            preset = "codicons",
-            maxwidth = 30, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            -- preset = "codicons",
+            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
             menu = {
               buffer = "[Buffer]",
@@ -192,6 +204,7 @@ return {
               emoji = "[Emoji]",
               nerdfont = "[NerdFont]",
               rg = "[Project]",
+              spell = "[Spell]"
             },
           }),
         },
