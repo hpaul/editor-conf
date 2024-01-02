@@ -46,6 +46,7 @@ return {
   },
   {
     "svermeulen/vim-yoink",
+    lazy = false,
     dependencies = {"svermeulen/vim-cutlass"},
     keys = {
       { "y", "<plug>(YoinkYankPreserveCursorPosition)", mode = {"n", "x"}, desc = "Yanking without changing cursor position" },

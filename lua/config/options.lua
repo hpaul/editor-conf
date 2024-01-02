@@ -46,7 +46,7 @@ opt.termguicolors = true -- True color support
 opt.undofile = true
 opt.undolevels = 10000
 opt.updatetime = 200 -- Save swap file and trigger CursorHold
-opt.wildmode = "full" -- Command-line completion mode
+opt.wildmode = "list,full" -- Command-line completion mode
 opt.winminwidth = 4 -- Minimum window width
 opt.compatible = false -- Disable old compatibility
 opt.lazyredraw = true -- redraw only when need to
@@ -82,6 +82,9 @@ opt.scroll = 15
 
 -- Ensure that vim searches everywhere in the current path
 vim.opt.path:append("**")
+
+vim.opt.virtualedit = "block"
+vim.opt.title = true
 
 -- Spelling
 opt.spelloptions = 'camel'
