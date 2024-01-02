@@ -46,9 +46,7 @@ return {
   },
   {
     "svermeulen/vim-yoink",
-    opts = {},
-    lazy = false,
-    dependencies = {"svermeulen/vim-yoink"},
+    dependencies = {"svermeulen/vim-cutlass"},
     keys = {
       { "y", "<plug>(YoinkYankPreserveCursorPosition)", mode = {"n", "x"}, desc = "Yanking without changing cursor position" },
       { "p", "<plug>(YoinkPaste_p)", mode = "n", desc = "Pasing on steroids" },
@@ -61,6 +59,7 @@ return {
     },
     config = function()
       vim.cmd([[
+         let g:yoinkIncludeDeleteOperations = 1
          let g:yoinkSyncSystemClipboardOnFocus = 0
          let g:yoinkAutoFormatPaste = 1
       ]])
