@@ -151,14 +151,14 @@ return {
     opts = {},
   },
 
-  -- Show a previus UI when navigating through buffers
+  -- Show a previous/next buffers when navigating between buffers
   {
     "ghillb/cybu.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", "nvim-lua/plenary.nvim" },
     opts = {
       position = {
         -- relative_to = "cursor",
-        -- anchor = "topleft",
+        anchor = "centerleft",
         max_win_height = 15
       },
       display_time = 1500,

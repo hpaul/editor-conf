@@ -200,12 +200,6 @@ return {
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
-  {
-    "chentoast/marks.nvim",
-    opts = {
-      default_mappings = true
-    }
-  },
   -- Flash Telescope config
   {
     "nvim-telescope/telescope.nvim",
