@@ -2,7 +2,8 @@ return {
   {
     "elixir-tools/elixir-tools.nvim",
     version = "*",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPre *.ex?s", "BufNewFile *.ex?s" },
+    lazy = true,
     config = function()
       local elixir = require("elixir")
       local elixirls = require("elixir.elixirls")

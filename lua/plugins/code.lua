@@ -18,7 +18,6 @@ return {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    build = "make install_jsregexp",
     -- build = (not jit.os:find("Windows"))
     --     and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
     --   or nil,
@@ -27,6 +26,10 @@ return {
       config = function()
         require("luasnip.loaders.from_vscode").lazy_load()
       end,
+      {
+        "kmarius/jsregexp",
+        build = "make install_jsregexp",
+      },
     },
     opts = {
       history = true,

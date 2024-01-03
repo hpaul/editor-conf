@@ -37,7 +37,7 @@ opt.wrap = false -- Enable line wrap
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartindent = true -- Insert indents automatically
 opt.breakindent = true -- Indents word-wrapped lines as much as the 'parent' line
-opt.spelllang = { "en" }
+opt.spelllang = { "en", "ro" }
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
 opt.tabstop = 2 -- Number of spaces tabs count for
@@ -65,8 +65,7 @@ opt.splitbelow = true
 opt.splitright = true
 opt.linebreak = true
 opt.startofline = true
--- To be considered
-opt.statuscolumn = "%@SignCb@%s%=%T%@NumCb@%l│%T"
+opt.statuscolumn = "%s%=%T%l│%T"
 
 -- Folding
 opt.foldenable = true -- enable folding
@@ -81,10 +80,10 @@ opt.writebackup = true
 opt.scroll = 15
 
 -- Ensure that vim searches everywhere in the current path
-vim.opt.path:append("**")
+opt.path:append("**")
 
-vim.opt.virtualedit = "block"
-vim.opt.title = true
+opt.virtualedit = "block"
+opt.title = true
 
 -- Spelling
 opt.spelloptions = 'camel'
