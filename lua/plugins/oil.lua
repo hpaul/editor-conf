@@ -12,10 +12,16 @@ return {
       cursorcolumn = false,
       spell = false,
     },
-    skip_confirm_for_simple_edits = false,
+    delete_to_trash = true,
+    skip_confirm_for_simple_edits = true,
     default_file_explorer = true,
     view_options = {
       show_hidden = true,
+      natural_order = false,
+      sort = {
+        { "type", "asc" },
+        { "mtime", "asc" }
+      }
     },
   },
   keys = function()

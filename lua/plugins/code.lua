@@ -71,6 +71,12 @@ return {
       local cmp_buffer = require("cmp_buffer")
       local luasnip = require("luasnip")
       local lspkind = require("lspkind")
+
+      -- Until a better place shows up
+      vim.cmd [[
+        autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+      ]]
+
       return {
         window = {
           completion = { -- rounded border; thin-style scrollbar
