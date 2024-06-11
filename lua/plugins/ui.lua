@@ -80,8 +80,9 @@ return {
     opts = {
       indent = {
         highlight = {"Whitespace"},
-        -- char = "▏"
-        char = ""
+        -- char = "▏",
+        char = "",
+        smart_indent_cap = true,
       },
       exclude = {
         filetypes = {
@@ -104,6 +105,8 @@ return {
         show_start = true,
         show_end = true,
         priority = 500,
+        char = "▏",
+        show_exact_scope = true,
       },
     },
     config = function (_, opts)

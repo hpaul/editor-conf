@@ -29,10 +29,10 @@ return {
         virtual_text = {
           spacing = 4,
           source = "if_many",
-          prefix = "●",
+          -- prefix = "●",
           -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
           -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-          -- prefix = "icons",
+          prefix = "icons",
         },
         float = {
           border = "single",
@@ -43,7 +43,7 @@ return {
       -- Be aware that you also will need to properly configure your LSP server to
       -- provide the inlay hints.
       inlay_hints = {
-        enabled = false,
+        enabled = true,
       },
       -- add any global capabilities here
       capabilities = {},
@@ -71,6 +71,9 @@ return {
           -- keys = {},
           settings = {
             Lua = {
+              hint = {
+                enable = true,
+              },
               workspace = {
                 checkThirdParty = false,
               },
@@ -130,21 +133,21 @@ return {
       if opts.inlay_hints.enabled and inlay_hint then
         Util.on_attach(function(client, buffer)
           if client.supports_method("textDocument/inlayHint") then
-            inlay_hint(buffer, true)
+            inlay_hint.enable(true, { bufnr = bufnr })
           end
         end)
       end
 
       if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
         opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
-          or function(diagnostic)
-            local icons = require("lazyvim.config").icons.diagnostics
-            for d, icon in pairs(icons) do
-              if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-                return icon
-              end
+        or function(diagnostic)
+          local icons = require("lazyvim.config").icons.diagnostics
+          for d, icon in pairs(icons) do
+            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+              return icon
             end
           end
+        end
       end
 
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))

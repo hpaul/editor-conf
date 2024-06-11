@@ -4,6 +4,7 @@ return {
     columns = {
       "icon",
       "size",
+      -- "birthtime",
       "mtime",
     },
     win_options = {
@@ -20,6 +21,7 @@ return {
       natural_order = false,
       sort = {
         { "type", "asc" },
+        { "birthtime", "asc" },
         { "mtime", "asc" }
       }
     },
