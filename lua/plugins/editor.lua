@@ -9,6 +9,12 @@ return {
     version = false, -- telescope did only one release, so use HEAD for now
     dependencies = {
       { "nvim-telescope/telescope-fzf-native.nvim", lazy = false, build = "make" },
+      {
+        "nvim-telescope/telescope-live-grep-args.nvim",
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = "^1.1.0",
+      },
     },
     keys = {
       { "<leader>fb", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
@@ -86,7 +92,9 @@ return {
 
     config = function()
       vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
-      require("telescope").setup({
+      local telescope = require("telescope")
+      local lga_helpers = require("telescope-live-grep-args.helpers")
+      telescope.setup({
         defaults = {
           layout_strategy = "vertical",
           layout_config = {
@@ -104,7 +112,6 @@ return {
             "rg",
             "--color=never",
             "--column",
-            "--hidden",
             "--line-number",
             "--no-heading",
             "--smart-case",
@@ -112,18 +119,17 @@ return {
           },
           prompt_prefix = " ",
           selection_caret = " ",
+          path_display = "smart",
           mappings = {
             i = {
-              ["<c-t>"] = function(...)
-                return require("trouble.providers.telescope").open_with_trouble(...)
-              end,
-              ["<a-t>"] = function(...)
-                return require("trouble.providers.telescope").open_selected_with_trouble(...)
-              end,
-              ["<a-i>"] = function()
+              ["<A-k>"] = function()
                 local action_state = require("telescope.actions.state")
-                local line = action_state.get_current_line()
-                Util.telescope("find_files", { no_ignore = true, default_text = line })()
+                local line = lga_helpers.quote(action_state.get_current_line())
+                telescope.extensions.live_grep_args.live_grep_args({
+                  auto_quoting = true,
+                  initial_mode = "insert",
+                  default_text = line,
+                })
               end,
               ["<a-h>"] = function()
                 local action_state = require("telescope.actions.state")
@@ -135,12 +141,6 @@ return {
               end,
               ["<C-Up>"] = function(...)
                 return require("telescope.actions").cycle_history_prev(...)
-              end,
-              ["<C-f>"] = function(...)
-                return require("telescope.actions").preview_scrolling_down(...)
-              end,
-              ["<C-b>"] = function(...)
-                return require("telescope.actions").preview_scrolling_up(...)
               end,
             },
             n = {
@@ -156,10 +156,13 @@ return {
             override_generic_sorter = true, -- override the generic sorter
             override_file_sorter = true, -- override the file sorter
             case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-            -- the default case_mode is "smart_case"
           },
         },
+        live_grep_args = {
+          auto_quoting = true, -- enable/disable auto-quoting
+        },
       })
+      require("telescope").load_extension("live_grep_args")
     end,
   },
   -- Flash enhances the built-in search functionality by showing labels
@@ -173,9 +176,9 @@ return {
     opts = {
       search = {
         exclude = {
-          "fugitive"
-        }
-      }
+          "fugitive",
+        },
+      },
     },
     -- stylua: ignore
     keys = {
@@ -244,14 +247,7 @@ return {
   },
 
   -- Git integration
-  {
-    "tpope/vim-fugitive",
-    lazy = false,
-    config = function() end,
-    keys = {},
-  },
-  { "tpope/vim-rhubarb", lazy = false },
-  { "sindrets/diffview.nvim" },
+  { "sindrets/diffview.nvim", lazy = false },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
   -- hunks in a commit.
@@ -291,9 +287,6 @@ return {
         -- map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     },
-  },
-  {
-    "nyngwang/murmur.lua",
   },
   -- Automatically highlights other instances of the word under your cursor.
   -- This works with LSP, Treesitter, and regexp matching to find the other

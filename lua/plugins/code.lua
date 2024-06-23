@@ -74,7 +74,7 @@ return {
 
       -- Until a better place shows up
       vim.cmd [[
-        autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+        autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, { name = 'buffer' }} })
       ]]
 
       return {
