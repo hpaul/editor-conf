@@ -15,6 +15,9 @@ return {
         -- For major updates, this must be adjusted manually.
         version = "^1.1.0",
       },
+      {
+        "Marskey/telescope-sg", lazy = false
+      }
     },
     keys = {
       { "<leader>fb", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
@@ -159,6 +162,15 @@ return {
             override_file_sorter = true, -- override the file sorter
             case_mode = "smart_case", -- or "ignore_case" or "respect_case"
           },
+          ast_grep = {
+            command = {
+              "sg",
+              "--json=stream",
+            }, -- must have --json=stream
+            grep_open_files = false, -- search in opened files
+            lang = nil, -- string value, specify language for ast-grep `nil` for default
+          }
+
         },
         live_grep_args = {
           auto_quoting = true, -- enable/disable auto-quoting

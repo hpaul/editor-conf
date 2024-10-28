@@ -1,4 +1,14 @@
-local load_textobjects = false
+local border = {
+  { "╭", "CmpBorder" },
+  { "─", "CmpBorder" },
+  { "╮", "CmpBorder" },
+  { "│", "CmpBorder" },
+  { "╯", "CmpBorder" },
+  { "─", "CmpBorder" },
+  { "╰", "CmpBorder" },
+  { "│", "CmpBorder" },
+}
+local load_textobjects = true
 return {
   -- Treesitter is a new parser generator tool that we can
   -- use in Neovim to power faster and more accurate
@@ -54,7 +64,8 @@ return {
         "erlang",
         "elixir",
         "heex",
-        "eex"
+        "eex",
+        "ruby",
       },
       incremental_selection = {
         enable = true,
@@ -67,6 +78,27 @@ return {
       },
       autotag = {
         enable = true
+      },
+      textobjects = {
+        select = {},
+        swap = {
+          enable = true,
+          swap_next = {
+            ["<leader>a"] = "@parameter.inner",
+          },
+          swap_previous = {
+            ["<leader>A"] = "@parameter.inner",
+          },
+        },
+        lsp_interop = {
+          enable = true,
+          border = border,
+          floating_preview_opts = {},
+          peek_definition_code = {
+            ["gp"] = "@function.outer",
+            ["gP"] = "@class.outer",
+          },
+        },
       }
     },
     ---@param opts TSConfig
@@ -123,13 +155,26 @@ return {
     keys = {
       {
         "[c",
-        function()
-          require("treesitter-context").go_to_context(vim.v.count1)
-        end,
+        function() require("treesitter-context").go_to_context(vim.v.count1) end,
         mode = "n",
         desc = "Go to context",
       }
     }
+  },
+  {
+    'Wansmer/treesj',
+    keys = {
+      { '<leader>m', function() require('treesj').toggle() end, },
+      { '<leader>j', function() require('treesj').join() end },
+      { '<leader>s', function() require('treesj').split() end },
+    },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+    config = function()
+      require('treesj').setup({
+        use_default_keymaps = false,
+        max_join_length = 300,
+      })
+    end,
   },
   {
     "https://gitlab.com/HiPhish/jinja.vim",

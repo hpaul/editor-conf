@@ -26,7 +26,7 @@ opt.number = true -- Print line number
 opt.numberwidth = 1 -- How many columns should line number take
 opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
-opt.relativenumber = false -- Relative line numbers
+opt.relativenumber = true -- Relative line numbers
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "winpos", "help" }
 opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
@@ -65,7 +65,7 @@ opt.splitbelow = true
 opt.splitright = true
 opt.linebreak = true
 opt.startofline = true
-opt.statuscolumn = "%s%=%T%l│%T"
+opt.statuscolumn = "%s%=%T%{v:relnum?v:relnum:v:lnum}│%T"
 
 -- Folding
 opt.foldenable = true -- enable folding
@@ -109,7 +109,7 @@ vim.cmd [[
         exec 'TSBufDisable refactor.smart_rename'
         exec 'TSBufDisable refactor.highlight_current_scope'
         exec 'TSBufDisable textobjects.swap'
-        " exec 'TSBufDisable textobjects.move'
+        exec 'TSBufDisable textobjects.move'
         exec 'TSBufDisable textobjects.lsp_interop'
         exec 'TSBufDisable textobjects.select'
     endif
