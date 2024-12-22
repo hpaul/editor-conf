@@ -19,13 +19,13 @@ return {
         --     useLibraryCodeForTypes = true
         --   }
         -- },
-        ruff_lsp = {},
+        ruff = {},
       },
     },
     setup = {
-      ruff_lsp = function()
+      ruff = function()
         require("lazyvim.util").on_attach(function(client, _)
-          if client.name == "ruff_lsp" then
+          if client.name == "ruff" then
             -- Disable hover in favor of Pyright
             client.server_capabilities.hoverProvider = false
           end

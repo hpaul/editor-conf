@@ -167,10 +167,23 @@ return {
       display_time = 1500,
     },
     keys = {
-      { "<S-h>", "<Plug>(CybuPrev)", desc = "Prev buffer" },
-      { "<S-l>", "<Plug>(CybuNext)", desc = "Next buffer" },
       { "[b", "<Plug>(CybuPrev)", desc = "Prev buffer" },
       { "]b", "<Plug>(CybuNext)", desc = "Next buffer" },
+    }
+  },
+  {
+    "https://gitlab.com/yorickpeterse/nvim-window",
+    opts = {
+      normal_hl = 'Todo',
+      hint_hl = 'Bold',
+      border = 'none'
+    },
+    keys = {
+      {
+        "<A-w>",
+        function() require("nvim-window").pick() end,
+        mode = { "n", "i" },
+      }
     }
   }
 }

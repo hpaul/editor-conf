@@ -1,6 +1,15 @@
 local Util = require("lazyvim.util")
 
 return {
+  --
+  {
+    "Marskey/telescope-sg",
+    lazy = false,
+    dependencies = {
+      {'nvim-lua/plenary.nvim'},
+      {'nvim-telescope/telescope.nvim'},
+    },
+  },
   -- fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
@@ -15,9 +24,6 @@ return {
         -- For major updates, this must be adjusted manually.
         version = "^1.1.0",
       },
-      {
-        "Marskey/telescope-sg", lazy = false
-      }
     },
     keys = {
       { "<leader>fb", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
