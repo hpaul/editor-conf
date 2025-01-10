@@ -392,5 +392,5 @@ return {
     "gbprod/stay-in-place.nvim",
     lazy = false,
     opts = { }
-  }
+  },
 }

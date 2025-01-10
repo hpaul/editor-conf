@@ -34,5 +34,40 @@ return {
         vim.opt.errorformat = original_errorformat
       end, { nargs = "+" })
     end
+  },
+  {
+    "nvim-lspconfig",
+    lazy = false,
+    init = function()
+      function FoldOthers()
+        -- Get current line and fold level
+        local current_line = vim.fn.line('.')
+        local current_fold_level = vim.fn.foldlevel(current_line)
+
+        -- Skip if we're on a line with no fold level
+        if current_fold_level == 0 then
+          return
+        end
+
+        -- Store view to restore cursor position later
+        local view = vim.fn.winsaveview()
+
+        -- Close all folds
+        vim.cmd('normal! zM')
+
+        -- Open folds until we reach our line
+        vim.cmd(current_line .. 'normal! zv')
+
+        -- Restore cursor position and center the view
+        vim.fn.winrestview(view)
+        vim.cmd('normal! zz')
+      end 
+      -- Optional: Set up a keybinding
+      vim.keymap.set('n', 'zO', FoldOthers, {
+        noremap = true,
+        silent = true,
+        desc = "Close all other folds and keep the one active where the cursor is",
+      })
+    end,
   }
 }

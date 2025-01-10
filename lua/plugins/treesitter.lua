@@ -1,13 +1,3 @@
-local border = {
-  { "╭", "CmpBorder" },
-  { "─", "CmpBorder" },
-  { "╮", "CmpBorder" },
-  { "│", "CmpBorder" },
-  { "╯", "CmpBorder" },
-  { "─", "CmpBorder" },
-  { "╰", "CmpBorder" },
-  { "│", "CmpBorder" },
-}
 local load_textobjects = true
 return {
   -- Treesitter is a new parser generator tool that we can
@@ -92,7 +82,7 @@ return {
         },
         lsp_interop = {
           enable = true,
-          border = border,
+          border = "single",
           floating_preview_opts = {},
           peek_definition_code = {
             ["gp"] = "@function.outer",

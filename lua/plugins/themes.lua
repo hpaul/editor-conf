@@ -2,8 +2,9 @@ return {
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
+    enabled = true,
     opts = {
-      terminal_colors = true, -- add neovim terminal colors
+      terminal_colors = true,
       undercurl = true,
       underline = true,
       bold = true,
@@ -11,7 +12,7 @@ return {
         strings = true,
         emphasis = true,
         comments = true,
-        operators = false,
+        operators = true,
         folds = true,
       },
       strikethrough = true,
@@ -19,7 +20,7 @@ return {
       invert_signs = false,
       invert_tabline = true,
       invert_intend_guides = true,
-      inverse = true, -- invert background for search, diffs, statuslines and errors
+      inverse = false, -- invert background for search, diffs, statuslines and errors
       contrast = "hard", -- can be "hard", "soft" or empty string
       palette_overrides = {},
       overrides = {},
@@ -28,6 +29,7 @@ return {
     },
     config = function(_, opts)
       require("gruvbox").setup(opts)
+      -- vim.o.background = "light"
       vim.cmd([[ colorscheme gruvbox ]])
     end,
   },

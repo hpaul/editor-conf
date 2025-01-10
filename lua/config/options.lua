@@ -65,13 +65,16 @@ opt.splitbelow = true
 opt.splitright = true
 opt.linebreak = true
 opt.startofline = true
-opt.statuscolumn = "%s%=%T%{v:relnum?v:relnum:v:lnum}│%T"
+opt.statuscolumn = "%C%s%=%T%{v:relnum?v:relnum:v:lnum}│%T"
 
 -- Folding
+opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 opt.foldenable = true -- enable folding
-opt.foldlevelstart = 10 -- open most folds by default
-opt.foldnestmax = 10 -- 10 nested fold max
-opt.foldmethod = "syntax"
+opt.foldlevel = 99
+opt.foldlevelstart = 8 -- open most folds by default
+opt.foldnestmax = 8 -- 10 nested fold max
+opt.foldmethod = 'expr'
+opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 -- Backups
 opt.writebackup = true

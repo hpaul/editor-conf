@@ -1,237 +1,262 @@
-local border = {
-  { "╭", "CmpBorder" },
-  { "─", "CmpBorder" },
-  { "╮", "CmpBorder" },
-  { "│", "CmpBorder" },
-  { "╯", "CmpBorder" },
-  { "─", "CmpBorder" },
-  { "╰", "CmpBorder" },
-  { "│", "CmpBorder" },
-}
-
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 return {
-  -- snippets
+  -- add blink.compat
   {
-    "L3MON4D3/LuaSnip",
-    -- build = (not jit.os:find("Windows"))
-    --     and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-    --   or nil,
+    'saghen/blink.compat',
+    -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
+    version = '*',
+    -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+    lazy = true,
+    -- make sure to set opts so that lazy.nvim calls blink.compat's setup
+    opts = {},
+  },
+  {
+    'saghen/blink.cmp',
+    -- optional: provides snippets for the snippet source
     dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
-      {
-        "kmarius/jsregexp",
-        build = "make install_jsregexp",
-      },
+      'rafamadriz/friendly-snippets',
+      'onsails/lspkind.nvim',
+      'mikavilpas/blink-ripgrep.nvim',
+      'dmitmel/cmp-digraphs',
+      { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
     },
+    -- use a release tag to download pre-built binaries
+    version = '*',
+    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
     opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
-    -- stylua: ignore
-    keys = {
-      -- {
-      --   "<tab>",
-      --   function()
-      --     return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-      --   end,
-      --   expr = true, silent = true, mode = "i",
-      -- },
-      -- { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      -- { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
-  },
-
-  -- auto completion
-  {
-    "hrsh7th/nvim-cmp",
-    version = false, -- last release is way too old
-    lazy = false,
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "saadparwaiz1/cmp_luasnip",
-      "L3MON4D3/LuaSnip",
-      "onsails/lspkind.nvim",
-      "lukas-reineke/cmp-rg",
-      "f3fora/cmp-spell"
-    },
-    opts = function()
-      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-      local cmp = require("cmp")
-      local defaults = require("cmp.config.default")()
-      local cmp_buffer = require("cmp_buffer")
-      local luasnip = require("luasnip")
-      local lspkind = require("lspkind")
-
-      -- Until a better place shows up
-      vim.cmd [[
-        autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, { name = 'buffer' }} })
-      ]]
-
-      return {
-        window = {
-          completion = { -- rounded border; thin-style scrollbar
-            border = border,
-            scrollbar = "║",
-          },
-          documentation = { -- no border; native-style scrollbar
-            border = border,
-            scrollbar = "║",
-          },
+      completion = {
+        trigger = {
+          show_on_keyword = true,
         },
-        view = {
-          entries = { name = "custom" },
+        -- 'prefix' will fuzzy match on the text before the cursor
+        -- 'full' will fuzzy match on the text before *and* after the cursor
+        -- example: 'foo_|_bar' will match 'foo_' for 'prefix' and 'foo__bar' for 'full'
+        keyword = { range = 'full' },
+
+        -- Disable auto brackets
+        -- NOTE: some LSPs may add auto brackets themselves anyway
+        accept = { auto_brackets = { enabled = false }, },
+
+        -- Don't select by default, auto insert on selection
+        list = {
+          max_items = 100,
+          selection = { preselect = true, auto_insert = true },
         },
-        completion = {
-          completeopt = "menu,menuone,noinsert",
+
+        menu = {
+          border = 'shadow',
+          draw = {
+            columns = {
+              { "kind_icon", gap = 1 },
+              { "label", "label_description", "source_name", gap = 1 },
+            },
+            components = {
+              kind_icon = {
+                ellipsis = false,
+                text = function(ctx)
+                  return require("lspkind").symbolic(ctx.kind, {
+                    mode = "symbol",
+                    symbol_map = { Copilot = "", Supermaven = "" },
+                  })
+                end,
+              },
+            }
+          }
         },
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
+        -- Display a preview of the selected item on the current line
+        ghost_text = { enabled = false },
+
+        -- Show documentation when selecting a completion item
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 300,
+          window = {
+            border = 'double'
+          }
+        },
+      },
+      -- 'default' for mappings similar to built-in completion
+      -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+      -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+      -- See the full "keymap" documentation for information on defining your own keymap.
+      keymap = {
+        preset = 'default',
+
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+
+        ['<C-space>'] = {
+          function(cmp)
+            if cmp.snippet_active() then return cmp.accept()
+            else return cmp.select_and_accept() end
           end,
+          'snippet_forward',
+          'fallback'
         },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-k>"] = { "show", "show_documentation", "hide_documentation" }
+      },
 
-          ["<C-Space>"] = cmp.mapping({
-            i = function()
-              cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-            end,
-            n = cmp.mapping.complete(),
-          }),
+      appearance = {
+        -- Sets the fallback highlight groups to nvim-cmp's highlight groups
+        -- Useful for when your theme doesn't support blink.cmp
+        -- Will be removed in a future release
+        use_nvim_cmp_as_default = true,
+        -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = 'normal'
+      },
 
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping({
-            i = function(fallback)
-              if cmp.visible() and cmp.get_active_entry() then
-                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-              else
-                fallback()
+      sources = {
+        default = function()
+          local success, node = pcall(vim.treesitter.get_node)
+          if success and node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
+            return { 'buffer', 'digraphs', 'ripgrep' }
+          end
+
+          if vim.tbl_contains({ "sql", "mysql", "plsql", "dbui" }, vim.bo.filetype) then
+            return { 'dadbod', 'buffer', 'snippets' }
+          end
+
+          local default = {
+            'lsp',
+            'path',
+            'buffer',
+            "ripgrep",
+            'snippets',
+            'digraphs'
+          }
+          return default
+        end,
+        providers = {
+          dadbod = {
+            name = 'vim-dadbod-completion',
+            module = 'blink.compat.source'
+          },
+          digraphs = {
+            name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
+            module = 'blink.compat.source',
+
+            -- all blink.cmp source config options work as normal:
+            score_offset = -3,
+
+            -- this table is passed directly to the proxied completion source
+            -- as the `option` field in nvim-cmp's source config
+            --
+            -- this is NOT the same as the opts in a plugin's lazy.nvim spec
+            opts = {
+              -- this is an option from cmp-digraphs
+              cache_digraphs_on_start = true,
+            },
+          },
+          ripgrep = {
+            module = "blink-ripgrep",
+            name = "Ripgrep",
+            -- the options below are optional, some default values are shown
+            ---@module "blink-ripgrep"
+            ---@type blink-ripgrep.Options
+            opts = {
+              -- For many options, see `rg --help` for an exact description of
+              -- the values that ripgrep expects.
+
+              -- the minimum length of the current word to start searching
+              -- (if the word is shorter than this, the search will not start)
+              prefix_min_len = 3,
+
+              -- The number of lines to show around each match in the preview
+              -- (documentation) window. For example, 5 means to show 5 lines
+              -- before, then the match, and another 5 lines after the match.
+              context_size = 5,
+
+              -- The maximum file size of a file that ripgrep should include in
+              -- its search. Useful when your project contains large files that
+              -- might cause performance issues.
+              -- Examples:
+              -- "1024" (bytes by default), "200K", "1M", "1G", which will
+              -- exclude files larger than that size.
+              max_filesize = "1M",
+
+              -- Specifies how to find the root of the project where the ripgrep
+              -- search will start from. Accepts the same options as the marker
+              -- given to `:h vim.fs.root()` which offers many possibilities for
+              -- configuration. If none can be found, defaults to Neovim's cwd.
+              --
+              -- Examples:
+              -- - ".git" (default)
+              -- - { ".git", "package.json", ".root" }
+              project_root_marker = ".git",
+
+              -- The casing to use for the search in a format that ripgrep
+              -- accepts. Defaults to "--ignore-case". See `rg --help` for all the
+              -- available options ripgrep supports, but you can try
+              -- "--case-sensitive" or "--smart-case".
+              search_casing = "--ignore-case",
+
+              -- (advanced) Any additional options you want to give to ripgrep.
+              -- See `rg -h` for a list of all available options. Might be
+              -- helpful in adjusting performance in specific situations.
+              -- If you have an idea for a default, please open an issue!
+              --
+              -- Not everything will work (obviously).
+              additional_rg_options = {},
+
+              -- When a result is found for a file whose filetype does not have a
+              -- treesitter parser installed, fall back to regex based highlighting
+              -- that is bundled in Neovim.
+              fallback_to_regex_highlighting = true,
+
+              -- Show debug information in `:messages` that can help in
+              -- diagnosing issues with the plugin.
+              debug = false,
+
+              -- Features that are not yet stable and might change in the future.
+              future_features = {
+                -- Kill previous searches when a new search is started. This is
+                -- useful to save resources and might become the default in the
+                -- future.
+                kill_previous_searches = true,
+              },
+            },
+            -- (optional) customize how the results are displayed. Many options
+            -- are available - make sure your lua LSP is set up so you get
+            -- autocompletion help
+            transform_items = function(_, items)
+              for _, item in ipairs(items) do
+                -- example: append a description to easily distinguish rg results
+                item.labelDetails = {
+                  description = "(proj)",
+                }
               end
+              return items
             end,
-            s = cmp.mapping.confirm({ select = true }),
-            c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-          }),
-          ["<ESC>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              -- @TODO find a way to actually close the copmletion menu
-              fallback()
-            else
-              fallback()
-            end
-          end),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-              -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-              -- they way you will only jump inside the snippet region
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
+          },
+        }
+      },
 
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "vim-dadbod-completion"},
-          { name = "nvim_lsp_signature_help" },
-          { name = "luasnip" },
-          {
-            name = "buffer",
-            option = {
-              keyword_length = 3,
-              get_bufnrs = function()
-                local bufs = {}
-                for _, win in ipairs(vim.api.nvim_list_wins()) do
-                  local buf = vim.api.nvim_win_get_buf(win)
-                  -- Allow only files which have a maximum size of 1Mb to be included in completion sources
-                  local byte_size = vim.api.nvim_buf_get_offset(buf, vim.api.nvim_buf_line_count(buf))
-                  if byte_size < 1024 * 1024 * 3 then
-                    bufs[buf] = true
-                  end
-                end
-                return vim.tbl_keys(bufs)
-              end,
-            },
-          },
-          {
-            name = "rg",
-            option = {
-              context_before = 3,
-              context_after = 3,
-            },
-            keyword_length = 5,
-          },
-          {
-            name = 'spell',
-            option = {
-              keep_all_entries = false,
-              enable_in_context = function()
-                return require('cmp.config.context').in_treesitter_capture('spell')
-              end,
-            },
-          },
-          { name = "path" },
-        }),
-        formatting = {
-          format = lspkind.cmp_format({
-            mode = "symbol_text", -- show only symbol annotations
-            -- preset = "codicons",
-            before = require("tailwind-tools.cmp").lspkind_format,
-            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-            ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-            menu = {
-              buffer = "[Buffer]",
-              nvim_lsp = "[LSP]",
-              luasnip = "[LuaSnip]",
-              nvim_lua = "[Lua]",
-              latex_symbols = "[Latex]",
-              emoji = "[Emoji]",
-              nerdfont = "[NerdFont]",
-              rg = "[Project]",
-              spell = "[Spell]"
-            },
-          }),
-        },
-        experimental = {
-          ghost_text = {
-            hl_group = "CmpGhostText",
-          },
-        },
-        sorting = {},
-      }
-    end,
+      snippets = { preset = "default" },
+      signature = { enabled = true },
+
+    },
+    opts_extend = { "sources.default" }
   },
-
+  {
+   'saghen/blink.cmp',
+    ft = { "sql", "mysql", "plsql", "dbui" },
+  },
   -- auto pairs
+  -- 
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
+    enabled = false,
     opts = {},
   },
   -- comments

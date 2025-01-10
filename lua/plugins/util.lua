@@ -31,19 +31,6 @@ return {
 
   -- library used by other plugins
   { "nvim-lua/plenary.nvim", lazy = true },
-
-  {
-    'mikesmithgh/kitty-scrollback.nvim',
-    enabled = true,
-    lazy = true,
-    cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth' },
-    event = { 'User KittyScrollbackLaunch' },
-    -- version = '*', -- latest stable version, may have breaking changes if major version changed
-    -- version = '^2.0.0', -- pin major version, include fixes and features that do not have breaking changes
-    config = function()
-      require('kitty-scrollback').setup()
-    end,
-  },
   {
     "svermeulen/vim-yoink",
     lazy = false,
@@ -67,5 +54,11 @@ return {
          let g:yoinkAutoFormatPaste = 1
       ]])
     end
+  },
+  {
+    "Konfekt/vim-CtrlXA",
+    enabled = true,
+    lazy = false,
+    keys = { }
   }
 }
