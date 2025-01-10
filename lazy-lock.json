@@ -59,6 +59,7 @@
   "vim-illuminate": { "branch": "master", "commit": "5eeb7951fc630682c322e88a9bbdae5c224ff0aa" },
   "vim-matchup": { "branch": "master", "commit": "aca23ce53ebfe34e02c4fe07e29e9133a2026481" },
   "vim-sleuth": { "branch": "master", "commit": "be69bff86754b1aa5adcbb527d7fcd1635a84080" },
+  "vim-speeddating": { "branch": "master", "commit": "c17eb01ebf5aaf766c53bab1f6592710e5ffb796" },
   "vim-startuptime": { "branch": "master", "commit": "97a88e688482a09c3c4b777d07b509b328a5ec29" },
   "vim-yoink": { "branch": "master", "commit": "89ed6934679fdbc3c20f552b50b1f869f624cd22" },
   "wtf.nvim": { "branch": "main", "commit": "16eec1f32c3608bd8519e9e520041fe34201abb0" }

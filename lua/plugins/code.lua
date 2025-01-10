@@ -102,7 +102,9 @@ return {
           'snippet_forward',
           'fallback'
         },
-        ["<C-k>"] = { "show", "show_documentation", "hide_documentation" }
+        ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
+        ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
       },
 
       appearance = {
@@ -174,7 +176,7 @@ return {
               -- The number of lines to show around each match in the preview
               -- (documentation) window. For example, 5 means to show 5 lines
               -- before, then the match, and another 5 lines after the match.
-              context_size = 5,
+              context_size = 3,
 
               -- The maximum file size of a file that ripgrep should include in
               -- its search. Useful when your project contains large files that
