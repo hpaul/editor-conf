@@ -32,12 +32,12 @@ opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true, S = false })
 opt.showmode = false -- Dont show mode since we have a statusline
-opt.sidescrolloff = 1 -- Columns of context
+opt.sidescrolloff = 5 -- Columns of context
 opt.wrap = false -- Enable line wrap
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartindent = true -- Insert indents automatically
 opt.breakindent = true -- Indents word-wrapped lines as much as the 'parent' line
-opt.spelllang = { "en", "ro" }
+opt.spelllang = "en,ro"
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
 opt.tabstop = 2 -- Number of spaces tabs count for
@@ -53,7 +53,7 @@ opt.lazyredraw = true -- redraw only when need to
 opt.showmatch = false -- highlight matching [{()}]
 opt.hlsearch = true -- highlight searches
 opt.hidden = true -- allow hidden buffers
-opt.scrolloff = 1 -- show 5 more lines after the current line
+opt.scrolloff = 5 -- show 5 more lines after the current line
 -- Prefer already opened splits when opening a buffer
 opt.switchbuf = "useopen"
 -- Decrease time of completion menu.

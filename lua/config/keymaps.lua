@@ -174,5 +174,5 @@ map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
 -- open current line on github
 vim.cmd [[
-  nnoremap <leader>o :!echo `git url`/blob/`git rev-parse --abbrev-ref HEAD`/%\#L<C-R>=line('.')<CR> \| xargs xdg-open<CR><CR>
+  nnoremap <leader>o :!echo `git url`/blob/master/`realpath --relative-to=$(git rev-parse --show-toplevel) %`\#L<C-R>=line('.')<CR> \| xargs xdg-open<CR><CR>
 ]]

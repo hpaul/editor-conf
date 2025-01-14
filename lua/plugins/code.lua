@@ -94,6 +94,9 @@ return {
         ['<Tab>'] = { 'select_next', 'fallback' },
         ['<S-Tab>'] = { 'select_prev', 'fallback' },
 
+        ['<Down>'] = { 'select_next', 'fallback' },
+        ['<Up>'] = { 'select_prev', 'fallback' },
+
         ['<C-space>'] = {
           function(cmp)
             if cmp.snippet_active() then return cmp.accept()
@@ -134,7 +137,6 @@ return {
             'buffer',
             "ripgrep",
             'snippets',
-            'digraphs'
           }
           return default
         end,
