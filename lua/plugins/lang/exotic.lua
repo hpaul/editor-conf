@@ -15,19 +15,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
-      servers = {
-        nim_langserver = {
-          enabled = true,
-        },
-        clangd = {
-          enabled = true
-        },
-        zls = {
-          enabled = true
-        }
-      },
+      servers = { },
     },
-    setup = { },
   },
 }
 

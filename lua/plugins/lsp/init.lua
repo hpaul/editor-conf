@@ -37,7 +37,7 @@ return {
       -- Be aware that you also will need to properly configure your LSP server to
       -- provide the inlay hints.
       inlay_hints = {
-        enabled = true,
+        enabled = false,
       },
       -- add any global capabilities here
       capabilities = {},
@@ -145,6 +145,7 @@ return {
       end
 
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+      -- vim.lsp.set_log_level(vim.lsp.log_levels[1])
 
       local servers = opts.servers
       local has_blink, blink_cmp = pcall(require, "blink.cmp")
@@ -231,38 +232,9 @@ return {
       }
     end,
   },
-  -- Add an AI helper bot which asks directly OpenAI GPT details about an diagnostic
-  {
-    "piersolenski/wtf.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-    opts = {
-      openai_model_id = "gpt-4o"
-    },
-    keys = {
-      {
-        "gW",
-        mode = { "n", "x" },
-        function()
-          require("wtf").ai()
-        end,
-        desc = "Debug diagnostic with AI",
-      },
-    },
-  },
-
-  -- Add some ai tool
-  {
-    "CamdenClark/flyboy",
-    opts = {
-      templates = {}
-    }
-  },
 
   -- cmdline tools and lsp servers
   {
-
     "williamboman/mason.nvim",
     cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },

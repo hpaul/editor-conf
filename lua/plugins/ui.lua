@@ -11,7 +11,6 @@ return {
     opts = function()
       local icons = require("lazyvim.config").icons
       local Util = require("lazyvim.util")
-      local wtf = require("wtf")
 
       return {
         options = {
@@ -20,7 +19,7 @@ return {
           disabled_filetypes = { statusline = { "dashboard", "alpha" } },
         },
         sections = {
-          lualine_a = { wtf.get_status, "mode" },
+          lualine_a = { "mode" },
           lualine_b = { "branch" },
           lualine_c = {
             { "filetype", icon_only = false, separator = "", padding = { left = 1, right = 0 } },

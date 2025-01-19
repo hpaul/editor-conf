@@ -18,9 +18,18 @@ return {
       servers = {
         ---@type lspconfig.options.ts_ls
         ts_ls = {
-          keys = {
-            { "<leader>co", "<cmd>TypescriptOrganizeImports<CR>", desc = "Organize Imports" },
-            { "<leader>cR", "<cmd>TypescriptRenameFile<CR>", desc = "Rename File" },
+          init_options = {
+            hostInfo = 'neovim',
+            trace = 'verbose',
+            log = "normal",
+            logDirectory = '~/.ts_logs',
+            logVerbosity = 'normal',
+            tsserver = {
+              log = "terse",
+              logDirectory = "~/.ts_logs",
+              maxTsServerMemory = 3072*3,
+              trace = "verbose",
+            },
           },
           settings = {
             typescript = {
@@ -34,17 +43,18 @@ return {
                 insertSpaceAfterOpeningAndBeforeClosingEmptyBraces = true,
                 placeOpenBraceOnNewLineForControlBlocks = true,
                 semicolons = "insert",
+                trimTrailingWhitespace = true,
               },
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
+              -- inlayHints = {
+              --   includeInlayParameterNameHints = "off",
+              --   includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+              --   includeInlayFunctionParameterTypeHints = true,
+              --   includeInlayVariableTypeHints = true,
+              --   includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+              --   includeInlayPropertyDeclarationTypeHints = true,
+              --   includeInlayFunctionLikeReturnTypeHints = true,
+              --   includeInlayEnumMemberValueHints = true,
+              -- },
             },
             javascript = {
               format = {
@@ -57,29 +67,24 @@ return {
                 insertSpaceAfterOpeningAndBeforeClosingEmptyBraces = true,
                 placeOpenBraceOnNewLineForControlBlocks = true,
                 semicolons = "insert",
+                trimTrailingWhitespace = true,
               },
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
+              -- inlayHints = {
+              --   includeInlayParameterNameHints = "off",
+              --   includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+              --   includeInlayFunctionParameterTypeHints = true,
+              --   includeInlayVariableTypeHints = true,
+              --   includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+              --   includeInlayPropertyDeclarationTypeHints = true,
+              --   includeInlayFunctionLikeReturnTypeHints = true,
+              --   includeInlayEnumMemberValueHints = true,
+              -- },
             },
             completions = {
               completeFunctionCalls = true,
             },
           },
         },
-      },
-      setup = {
-        ts_ls = function(_, opts)
-          require("lspconfig").ts_ls.setup({ server = opts })
-          return true
-        end,
       },
     },
   },
