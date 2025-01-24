@@ -12,6 +12,19 @@ return {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
         init = function()
+          -- Until I find a better place
+          -- make zsh files recognized as sh for bash-ls & treesitter
+          vim.filetype.add {
+            extension = {
+              zsh = "sh",
+              sh = "sh", -- force sh-files with zsh-shebang to still get sh as filetype
+            },
+            filename = {
+              [".zshrc"] = "sh",
+              [".zshenv"] = "sh",
+              [".envrc"] = "sh",
+            },
+          }
           -- disable rtp plugin, as we only need its queries for mini.ai
           -- In case other textobject modules are enabled, we will load them
           -- once nvim-treesitter is loaded
@@ -28,7 +41,10 @@ return {
     },
     ---@type TSConfig
     opts = {
-      highlight = { enable = true },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+      },
       indent = { enable = true },
       ensure_installed = {
         "bash",
@@ -56,6 +72,8 @@ return {
         "heex",
         "eex",
         "ruby",
+        "graphql",
+        "prisma",
       },
       incremental_selection = {
         enable = true,

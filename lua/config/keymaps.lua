@@ -90,6 +90,7 @@ map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result
 map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
+
 -- insert semicolon in the end
 map("i", "<A-;>", "<Esc>miA;<Esc>`ii")
 -- save file

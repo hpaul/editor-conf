@@ -105,13 +105,13 @@ return {
           'snippet_forward',
           'fallback'
         },
-        ['<CR>'] = {
-          function(cmp)
-            if cmp.snippet_active() then return cmp.accept()
-            else return cmp.select_and_accept() end
-          end,
-          'fallback'
-        },
+        -- ['<CR>'] = {
+        --   function(cmp)
+        --     if cmp.snippet_active() then return cmp.accept()
+        --     else return cmp.select_and_accept() end
+        --   end,
+        --   'fallback'
+        -- },
         ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },

@@ -255,6 +255,7 @@ return {
     end,
   },
   { "tpope/vim-sleuth", enabled = false, },
+  { "tpope/vim-eunuch", lazy = false, enabled= true, },
   { "junegunn/vim-peekaboo", enabled = false },
   {
     "andymass/vim-matchup",
