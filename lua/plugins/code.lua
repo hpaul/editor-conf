@@ -1,8 +1,3 @@
-local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
 return {
   -- add blink.compat
   {
@@ -13,6 +8,18 @@ return {
     lazy = true,
     -- make sure to set opts so that lazy.nvim calls blink.compat's setup
     opts = {},
+  },
+  {
+    "Allaman/emoji.nvim",
+    dependencies = { "saghen/blink.cmp" },
+    lazy = false,
+    opts = {
+      enable_cmp_integration = true,
+    },
+    config = function(_, opts)
+      require("emoji").setup(opts)
+      require('telescope').load_extension('emoji')
+    end
   },
   {
     'saghen/blink.cmp',
@@ -147,6 +154,7 @@ return {
             "ripgrep",
             'snippets',
             'nerdfont',
+            'emoji'
           }
           return default
         end,
@@ -158,6 +166,17 @@ return {
           nerdfont = {
             name = 'nerdfont',
             module = 'blink.compat.source'
+          },
+          emoji = {
+            name = 'emoji',
+            module = 'blink.compat.source',
+            transform_items = function(ctx, items)
+              local kind = require("blink.cmp.types").CompletionItemKind.Text
+              for i = 1, #items do
+                items[i].kind = kind
+              end
+              return items
+            end,
           },
           digraphs = {
             name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
