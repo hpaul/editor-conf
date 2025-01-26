@@ -22,6 +22,7 @@ return {
       'onsails/lspkind.nvim',
       'mikavilpas/blink-ripgrep.nvim',
       'dmitmel/cmp-digraphs',
+      "chrisgrieser/cmp-nerdfont",
       { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
     },
     -- use a release tag to download pre-built binaries
@@ -131,7 +132,7 @@ return {
         default = function()
           local success, node = pcall(vim.treesitter.get_node)
           if success and node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
-            return { 'buffer', 'digraphs', 'ripgrep' }
+            return { 'buffer', 'digraphs', 'ripgrep', "nerdfont" }
           end
 
           if vim.tbl_contains({ "sql", "mysql", "plsql", "dbui" }, vim.bo.filetype) then
@@ -145,12 +146,17 @@ return {
             'buffer',
             "ripgrep",
             'snippets',
+            'nerdfont',
           }
           return default
         end,
         providers = {
           dadbod = {
             name = 'vim-dadbod-completion',
+            module = 'blink.compat.source'
+          },
+          nerdfont = {
+            name = 'nerdfont',
             module = 'blink.compat.source'
           },
           digraphs = {
@@ -252,10 +258,8 @@ return {
           },
         }
       },
-
       snippets = { preset = "default" },
       signature = { enabled = true },
-
     },
     opts_extend = { "sources.default" }
   },
@@ -264,7 +268,6 @@ return {
     ft = { "sql", "mysql", "plsql", "dbui" },
   },
   -- auto pairs
-  -- 
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",

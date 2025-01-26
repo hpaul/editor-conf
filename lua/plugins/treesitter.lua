@@ -74,6 +74,7 @@ return {
         "ruby",
         "graphql",
         "prisma",
+        "commonlisp",
       },
       incremental_selection = {
         enable = true,
@@ -173,10 +174,8 @@ return {
     'Wansmer/treesj',
     keys = {
       { '<leader>m', function() require('treesj').toggle() end, },
-      { '<leader>j', function() require('treesj').join() end },
-      { '<leader>s', function() require('treesj').split() end },
     },
-    dependencies = { 'nvim-treesitter/nvim-treesitter' }, -- if you install parsers with `nvim-treesitter`
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,

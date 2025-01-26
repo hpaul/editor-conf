@@ -204,14 +204,6 @@ return {
           return not is_deno(root_dir)
         end)
       end
-
-      local config = require('lspconfig.configs')
-      config.ast_grep = {
-        default_config = {
-            cmd = {'ast-grep', 'lsp'};
-            single_file_support = false;
-          }
-      }
     end,
   },
 

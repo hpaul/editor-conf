@@ -93,10 +93,16 @@ end
 -- for `files`, git_files or find_files will be chosen depending on .git
 function M.telescope(builtin, opts)
   local params = { builtin = builtin, opts = opts }
+  local prefixes = {
+    ["live_grep"] = "󰈞  ",
+    ["files"] = "󰥨  ",
+    ["grep_string"] = "󱄽  ",
+    ["colorscheme"] = "󱞓  "
+  }
   return function()
     builtin = params.builtin
     opts = params.opts
-    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
+    opts = vim.tbl_deep_extend("force", { cwd = M.get_root(), prompt_prefix = prefixes[builtin] }, opts or {})
     if builtin == "files" then
       if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. "/.git") then
         opts.show_untracked = true
@@ -107,7 +113,7 @@ function M.telescope(builtin, opts)
     end
     if opts.cwd and opts.cwd ~= vim.loop.cwd() then
       opts.attach_mappings = function(_, map)
-        map("i", "<a-c>", function()
+        map("i", "<A-c>", function()
           local action_state = require("telescope.actions.state")
           local line = action_state.get_current_line()
           M.telescope(

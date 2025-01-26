@@ -3,17 +3,40 @@ local Util = require("lazyvim.util")
 return {
   --
   {
+    'glepnir/nerdicons.nvim',
+    cmd = 'NerdIcons',
+    config = function() require('nerdicons').setup({}) end,
+  },
+  {
+    'barrett-ruth/http-codes.nvim',
+    cmd = 'HTTPCodes',
+    config = true,
+  },
+  {
+    "pwntester/octo.nvim",
+    opts = { },
+    config = true,
+  },
+  {
     "Marskey/telescope-sg",
     lazy = false,
     dependencies = {
       {'nvim-lua/plenary.nvim'},
       {'nvim-telescope/telescope.nvim'},
     },
+    init = function ()
+      local config = require('lspconfig.configs')
+      config.ast_grep = {
+        default_config = {
+          cmd = {'ast-grep', 'lsp'};
+          single_file_support = false;
+        }
+      }
+    end
   },
   -- fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
-    commit = vim.fn.has("nvim-0.9.0") == 0 and "057ee0f8783" or nil,
     cmd = "Telescope",
     version = false, -- telescope did only one release, so use HEAD for now
     dependencies = {
@@ -42,7 +65,6 @@ return {
       -- search
       { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
       { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
-      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
       { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
       { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
       { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
@@ -105,12 +127,13 @@ return {
       local lga_helpers = require("telescope-live-grep-args.helpers")
       telescope.setup({
         defaults = {
-          layout_strategy = "vertical",
+          layout_strategy = "bottom_pane",
           layout_config = {
-            height = 0.75,
-            mirror = true,
-            prompt_position = "top",
+            height = 0.30,
+            mirror = false,
+            prompt_position = "bottom",
           },
+          theme = "ivy",
           selection_strategy = "closest",
           sorting_strategy = "ascending",
           dynamic_preview_title = true,
@@ -126,11 +149,9 @@ return {
             "--smart-case",
             "--with-filename",
           },
-          prompt_prefix = " ",
+          prompt_prefix = "🔍 ",
           selection_caret = " ",
-          path_display = {
-            "smart"
-          },
+          path_display = { "smart" },
           mappings = {
             i = {
               ["<A-k>"] = function()
@@ -171,6 +192,8 @@ return {
           ast_grep = {
             command = {
               "sg",
+              -- "scan",
+              "--globs=!*.sql",
               "--json=stream",
             }, -- must have --json=stream
             grep_open_files = false, -- search in opened files
@@ -209,15 +232,15 @@ return {
           require("flash").jump()
         end,
         desc = "Flash" },
-      {
-        "S",
-        mode = { "n", "o", "x" },
-        -- For the moment i don't use this
-        -- function()
-        --   require("flash").treesitter()
-        -- end,
-        desc = "Flash Treesitter"
-      },
+      -- {
+      --   "S",
+      --   mode = { "n", "o", "x" },
+      --   -- For the moment i don't use this
+      --   function()
+      --     require("flash").treesitter()
+      --   end,
+      --   desc = "Flash Treesitter"
+      -- },
       { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
       { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
