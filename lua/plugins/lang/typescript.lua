@@ -5,7 +5,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "javascript", "typescript", "tsx" })
+        vim.list_extend(opts.ensure_installed, { "javascript", "typescript", "tsx", "json", "jsonc" })
       end
     end,
   },
@@ -30,6 +30,11 @@ return {
               maxTsServerMemory = 3072*3,
               trace = "verbose",
             },
+          },
+          preferences = {
+            includeCompletionsForModuleExports = true,
+            includeCompletionsWithObjectLiteralMethodSnippets = true,
+            importModuleSpecifierPreference = 'relative',
           },
           settings = {
             typescript = {

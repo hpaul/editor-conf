@@ -15,6 +15,21 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+vim.filetype.add({
+  extension = {
+    conf = "conf",
+    env = "bash",
+  },
+  filename = {
+    [".env"] = "bash",
+    ["tsconfig.json"] = "jsonc",
+    [".yamlfmt"] = "yaml",
+  },
+  pattern = {
+    ["%.env%.[%w_.-]+"] = "bash",
+  },
+})
+
 -- Use lazy to load every config details
 require("lazy").setup({
   spec = {

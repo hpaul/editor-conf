@@ -13,11 +13,6 @@ return {
     config = true,
   },
   {
-    "pwntester/octo.nvim",
-    opts = { },
-    config = true,
-  },
-  {
     "Marskey/telescope-sg",
     lazy = false,
     dependencies = {
@@ -76,7 +71,6 @@ return {
       { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
       { "<leader>sm", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
       { "<leader>sM", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
-      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
       { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
       { "<leader>sw", Util.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
       { "<leader>sW", Util.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
@@ -278,17 +272,17 @@ return {
     end,
   },
   { "tpope/vim-sleuth", enabled = false, },
-  { "tpope/vim-eunuch", lazy = false, enabled= true, },
+  { "lambdalisue/vim-suda", lazy = false, enabled= true },
   { "junegunn/vim-peekaboo", enabled = false },
-  {
-    "andymass/vim-matchup",
-    lazy = false,
-    setup = function()
-      vim.g.loaded_matchit = 1
-      vim.g.matchup_matchparen_offscreen = { method = "popup" }
-      vim.g.matchup_matchparen_hi_surround_always = 0
-    end,
-  },
+  -- {
+  --   "andymass/vim-matchup",
+  --   lazy = false,
+  --   setup = function()
+  --     vim.g.loaded_matchit = 1
+  --     vim.g.matchup_matchparen_offscreen = { method = "popup" }
+  --     vim.g.matchup_matchparen_hi_surround_always = 0
+  --   end,
+  -- },
 
   -- Git integration
   { "sindrets/diffview.nvim", lazy = false },
@@ -435,6 +429,18 @@ return {
     end,
   },
   {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require('ts_context_commentstring').setup {
+        enable_autocmd = false,
+      }
+    end,
+  },
+  {
     "windwp/nvim-ts-autotag",
     lazy = false,
     opt = true,
@@ -461,7 +467,7 @@ return {
         act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
         default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
         default_shift_tab = '<C-d>', -- reverse shift default action,
-        enable_backwards = true, -- well ...
+        enable_backwards = false, -- well ...
         completion = false, -- if the tabkey is used in a completion pum
         tabouts = {
           { open = "'", close = "'" },

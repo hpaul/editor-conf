@@ -1,6 +1,6 @@
 -- This file is automatically loaded by plugins.core
 vim.g.mapleader = ","
-vim.g.maplocalleader = "/"
+vim.g.maplocalleader = "\\"
 
 local opt = vim.opt
 
@@ -66,6 +66,8 @@ opt.splitright = true
 opt.linebreak = true
 opt.startofline = true
 opt.statuscolumn = "%C%s%=%T%{v:relnum?v:relnum:v:lnum}│%T"
+opt.splitkeep = "cursor"
+opt.shortmess:append({ C = true })
 
 -- Folding
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
@@ -91,11 +93,6 @@ opt.title = true
 -- Spelling
 opt.spelloptions = 'camel'
 vim.cmd [[language en_US.UTF-8]]
-
-if vim.fn.has("nvim-0.9.0") == 1 then
-  opt.splitkeep = "screen"
-  opt.shortmess:append({ C = true })
-end
 
 vim.cmd [[
   function DisableSyntaxTreesitter()

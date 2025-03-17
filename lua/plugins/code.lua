@@ -13,6 +13,7 @@ return {
     "Allaman/emoji.nvim",
     dependencies = { "saghen/blink.cmp" },
     lazy = false,
+    cmd = "Emoji",
     opts = {
       enable_cmp_integration = true,
     },
@@ -56,8 +57,8 @@ return {
 
         -- Don't select by default, auto insert on selection
         list = {
-          max_items = 100,
-          selection = { preselect = true, auto_insert = true },
+          max_items = 200,
+          selection = { preselect = false, auto_insert = true },
         },
 
         menu = {
@@ -113,13 +114,6 @@ return {
           'snippet_forward',
           'fallback'
         },
-        -- ['<CR>'] = {
-        --   function(cmp)
-        --     if cmp.snippet_active() then return cmp.accept()
-        --     else return cmp.select_and_accept() end
-        --   end,
-        --   'fallback'
-        -- },
         ["<C-k>"] = { "show", "show_documentation", "hide_documentation" },
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
@@ -139,7 +133,7 @@ return {
         default = function()
           local success, node = pcall(vim.treesitter.get_node)
           if success and node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
-            return { 'buffer', 'digraphs', 'ripgrep', "nerdfont" }
+            return { 'buffer', 'digraphs' }
           end
 
           if vim.tbl_contains({ "sql", "mysql", "plsql", "dbui" }, vim.bo.filetype) then
@@ -151,10 +145,8 @@ return {
             'lsp',
             'path',
             'buffer',
-            "ripgrep",
-            'snippets',
-            'nerdfont',
-            'emoji'
+            -- "ripgrep",
+            -- 'snippets',
           }
           return default
         end,
@@ -166,17 +158,6 @@ return {
           nerdfont = {
             name = 'nerdfont',
             module = 'blink.compat.source'
-          },
-          emoji = {
-            name = 'emoji',
-            module = 'blink.compat.source',
-            transform_items = function(ctx, items)
-              local kind = require("blink.cmp.types").CompletionItemKind.Text
-              for i = 1, #items do
-                items[i].kind = kind
-              end
-              return items
-            end,
           },
           digraphs = {
             name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
