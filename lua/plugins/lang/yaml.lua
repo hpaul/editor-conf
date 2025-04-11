@@ -14,8 +14,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "b0o/SchemaStore.nvim",
-      version = false, -- last release is way too old
+      "b0o/schemastore.nvim",
+      version = false,
     },
     opts = {
       -- make sure mason installs the server
@@ -42,6 +42,27 @@ return {
               format = {
                 enable = true,
               },
+              customTags = {
+                "!Base64 scalar",
+                "!Cidr scalar",
+                "!And sequence",
+                "!Equals sequence",
+                "!If sequence",
+                "!Not sequence",
+                "!Or sequence",
+                "!Condition scalar",
+                "!FindInMap sequence",
+                "!GetAtt scalar",
+                "!GetAtt sequence",
+                "!GetAZs scalar",
+                "!ImportValue scalar",
+                "!Join sequence",
+                "!Select sequence",
+                "!Split sequence",
+                "!Sub scalar",
+                "!Transform mapping",
+                "!Ref scalar",
+              },
               validate = true,
               schemaStore = {
                 -- Must disable built-in schemaStore support to use
@@ -50,6 +71,7 @@ return {
                 -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
                 url = "",
               },
+              schemas = require('schemastore').yaml.schemas(),
             },
           },
         },

@@ -75,6 +75,8 @@ return {
         "graphql",
         "prisma",
         "commonlisp",
+        "typespec",
+        "astro"
       },
       incremental_selection = {
         enable = true,
@@ -91,17 +93,17 @@ return {
       textobjects = {
         select = {},
         swap = {
-          enable = true,
+          enable = false,
           swap_next = {
-            ["<leader>a"] = "@parameter.inner",
+            ["<leader>sn"] = "@parameter.inner",
           },
           swap_previous = {
-            ["<leader>A"] = "@parameter.inner",
+            ["<leader>sp"] = "@parameter.inner",
           },
         },
         lsp_interop = {
-          enable = true,
           border = "single",
+          enable = true,
           floating_preview_opts = {},
           peek_definition_code = {
             ["gp"] = "@function.outer",
@@ -112,6 +114,17 @@ return {
     },
     ---@param opts TSConfig
     config = function(_, opts)
+      -- Register the mdx filetype
+      vim.filetype.add({ extension = { mdx = "mdx" } })
+
+      -- Configure treesitter to use the markdown parser for mdx files
+      vim.treesitter.language.register("markdown", "mdx")
+
+      -- If the current buffer has the extension mdx, but not the newly create filetype, set it
+      if vim.endswith(vim.api.nvim_buf_get_name(0), ".mdx") and vim.o.filetype ~= "mdx" then
+        vim.o.filetype = "mdx"
+      end
+
       if type(opts.ensure_installed) == "table" then
         ---@type table<string, boolean>
         local added = {}

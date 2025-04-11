@@ -4,11 +4,12 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
+      "b0o/schemastore.nvim",
+      version = false,
       { "folke/neodev.nvim", opts = {} },
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
-    ---@class PluginLspOpts
     opts = {
       -- ui
       ui = {},
@@ -53,9 +54,18 @@ return {
         timeout_ms = nil,
       },
       -- LSP Server Settings
-      ---@type lspconfig.options
+      ---@type lspconfig.Config
       servers = {
-        jsonls = {},
+        tsp_server = { settings = {} },
+        jsonls = {
+          settings = {
+            json = {
+              -- @TODO: Get this working
+              -- schemas = require('schemastore').json.schemas(),
+              validate = true,
+            },
+          },
+        },
         lua_ls = {
           -- mason = false, -- set to false if you don't want this server to be installed with mason
           -- Use this to add any additional keymaps

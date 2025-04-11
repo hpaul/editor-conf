@@ -24,6 +24,7 @@ vim.filetype.add({
     [".env"] = "bash",
     ["tsconfig.json"] = "jsonc",
     [".yamlfmt"] = "yaml",
+    [".mdx"] = "markdown"
   },
   pattern = {
     ["%.env%.[%w_.-]+"] = "bash",

@@ -18,15 +18,16 @@ return {
     dependencies = {
       {'nvim-lua/plenary.nvim'},
       {'nvim-telescope/telescope.nvim'},
+      {'nvim-lspconfig'},
     },
-    init = function ()
-      local config = require('lspconfig.configs')
-      config.ast_grep = {
-        default_config = {
-          cmd = {'ast-grep', 'lsp'};
-          single_file_support = false;
-        }
-      }
+    config = function ()
+      -- local config = require('lspconfig')
+      -- config.ast_grep = {
+      --   default_config = {
+      --     cmd = {'ast-grep', 'lsp'};
+      --     single_file_support = false;
+      --   }
+      -- }
     end
   },
   -- fuzzy finder
@@ -332,6 +333,7 @@ return {
   {
     "RRethy/vim-illuminate",
     event = { "BufReadPost", "BufNewFile" },
+    enabled = false,
     opts = {
       delay = 100,
       large_file_cutoff = 2000,
