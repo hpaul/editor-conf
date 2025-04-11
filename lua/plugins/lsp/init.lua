@@ -16,21 +16,47 @@ return {
       -- options for vim.diagnostic.config()
       diagnostics = {
         -- Only underline the real error
-        underline = {
-          severity = vim.diagnostic.severity.ERROR,
-        },
+        -- underline = {
+        --   severity = vim.diagnostic.severity.ERROR,
+        -- },
         update_in_insert = false,
-        virtual_text = {
-          spacing = 4,
-          source = "if_many",
-          -- prefix = "●",
-          -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-          -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-          prefix = "icons",
+        virtual_lines = {
+          current_line = true,
+          format = function (diagnostic)
+              return diagnostic.message
+            -- local icons = require("lazyvim.config").icons.diagnostics
+            -- for d, icon in pairs(icons) do
+            --   if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+            --     return icon .. " " .. diagnostic.message
+            --   end
+            --   return diagnostic.message
+            -- end
+          end
         },
-        float = {
-          border = "single",
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.HINT] = '',
+            [vim.diagnostic.severity.INFO] = '',
+          },
+          linehl = {
+            [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+          },
         },
+        virtual_text = false,
+        -- virtual_text = {
+        --   spacing = 4,
+        --   source = "if_many",
+        --   -- prefix = "●",
+        --   -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+        --   -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+        --   prefix = "icons",
+        -- },
+        float = false,
+        -- float = {
+        --   border = "single",
+        -- },
         severity_sort = true,
       },
       -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
@@ -106,12 +132,10 @@ return {
       Util.on_attach(function(client, buffer)
         require("plugins.lsp.keymaps").on_attach(client, buffer)
       end)
-
-      -- setup borders
-      local lsp_handlers_opts = { border = "single" }
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, lsp_handlers_opts)
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, lsp_handlers_opts)
-      vim.lsp.handlers["textDocument/codeLens"] = vim.lsp.with(vim.lsp.handlers.codeLens, lsp_handlers_opts)
+      -- local lsp_handlers_opts = { border = "single" }
+      -- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, lsp_handlers_opts)
+      -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, lsp_handlers_opts)
+      -- vim.lsp.handlers["textDocument/codeLens"] = vim.lsp.with(vim.lsp.handlers.codeLens, lsp_handlers_opts)
 
       local register_capability = vim.lsp.handlers["client/registerCapability"]
 

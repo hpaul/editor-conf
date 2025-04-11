@@ -142,19 +142,19 @@ return {
           end
 
           local default = {
+            "dadbod",
             'lsp',
-            'path',
             'buffer',
-            -- "ripgrep",
+            'path',
+            "ripgrep",
+            "nerdfont",
+            -- "digraphs"
             -- 'snippets',
           }
           return default
         end,
         providers = {
-          dadbod = {
-            name = 'vim-dadbod-completion',
-            module = 'blink.compat.source'
-          },
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           nerdfont = {
             name = 'nerdfont',
             module = 'blink.compat.source'

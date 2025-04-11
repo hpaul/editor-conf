@@ -66,7 +66,9 @@ opt.splitbelow = true
 opt.splitright = true
 opt.linebreak = true
 opt.startofline = true
-opt.statuscolumn = "%C%s%=%T%{v:relnum?v:relnum:v:lnum}│%T"
+-- Keep for backwards compatibility
+-- opt.statuscolumn = "%C%s%=%T%{v:relnum?v:relnum:v:lnum}│%T"
+opt.statuscolumn = "%C%s%=%T%l│%T"
 opt.splitkeep = "cursor"
 opt.shortmess:append({ C = true })
 
