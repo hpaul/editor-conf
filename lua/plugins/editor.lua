@@ -281,12 +281,6 @@ return {
   --     vim.g.matchup_matchparen_hi_surround_always = 0
   --   end,
   -- },
-
-  -- Git integration
-  { "sindrets/diffview.nvim", lazy = false },
-  -- git signs highlights text that has changed since the list
-  -- git commit, and also lets you interactively stage & unstage
-  -- hunks in a commit.
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -308,7 +302,7 @@ return {
         untracked    = { text = '┆' },
       },
       signs_staged_enable = true,
-      word_diff = false,
+      word_diff = true,
       current_line_blame = true,
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
@@ -320,15 +314,11 @@ return {
         map("n", "[h", gs.prev_hunk, "Prev Hunk")
         map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
         map("n", "<leader>gu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+        map("n", "<leader>gp", gs.preview_hunk, "Preview Hunk")
+        map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
 
         -- May or may be not useful, I have to advance my git understanding and flow
-        -- map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         -- map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        -- map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        -- map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        -- map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        -- map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
         -- map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     },
@@ -426,6 +416,36 @@ return {
     event={'InsertEnter','CmdlineEnter'},
     branch='v0.6', --recommended as each new version will have breaking changes
     opts = { },
+  },
+  {
+    'abecodes/tabout.nvim',
+    lazy = false,
+    config = function()
+      require('tabout').setup {
+        tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
+        backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
+        act_as_tab = true, -- shift content if tab out is not possible
+        act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+        default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
+        default_shift_tab = '<C-d>', -- reverse shift default action,
+        enable_backwards = true, -- well ...
+        completion = false, -- if the tabkey is used in a completion pum
+        tabouts = {
+          { open = "'", close = "'" },
+          { open = '"', close = '"' },
+          { open = '`', close = '`' },
+          { open = '(', close = ')' },
+          { open = '[', close = ']' },
+          { open = '{', close = '}' }
+        },
+        ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+        exclude = {} -- tabout will ignore these filetypes
+      }
+    end,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opt = false,  -- Set this to true if the plugin is optional
+    event = 'InsertCharPre', -- Set the event to 'InsertCharPre' for better compatibility
+    priority = 1000,
   },
   {
     "RRethy/nvim-treesitter-endwise",
