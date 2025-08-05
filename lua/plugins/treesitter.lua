@@ -77,7 +77,8 @@ return {
         "prisma",
         "commonlisp",
         "typespec",
-        "astro"
+        "astro",
+        "scss"
       },
       incremental_selection = {
         enable = true,

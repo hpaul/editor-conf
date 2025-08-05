@@ -72,7 +72,7 @@ end
 ---@param method string
 function M.has(buffer, method)
   method = method:find("/") and method or "textDocument/" .. method
-  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
+  local clients = vim.lsp.get_clients({ bufnr = buffer })
   for _, client in ipairs(clients) do
     if client.supports_method(method) then
       return true
@@ -98,7 +98,7 @@ function M.resolve(buffer)
   end
 
   local opts = require("lazyvim.util").opts("nvim-lspconfig")
-  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
+  local clients = vim.lsp.get_clients({ bufnr = buffer })
   for _, client in ipairs(clients) do
     local maps = opts.servers[client.name] and opts.servers[client.name].keys or {}
     for _, keymap in ipairs(maps) do

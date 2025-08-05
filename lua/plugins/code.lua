@@ -1,27 +1,4 @@
 return {
-  -- add blink.compat
-  {
-    'saghen/blink.compat',
-    -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
-    version = '*',
-    -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
-    lazy = true,
-    -- make sure to set opts so that lazy.nvim calls blink.compat's setup
-    opts = {},
-  },
-  {
-    "Allaman/emoji.nvim",
-    dependencies = { "saghen/blink.cmp" },
-    lazy = false,
-    cmd = "Emoji",
-    opts = {
-      enable_cmp_integration = true,
-    },
-    config = function(_, opts)
-      require("emoji").setup(opts)
-      require('telescope').load_extension('emoji')
-    end
-  },
   {
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
@@ -29,8 +6,11 @@ return {
       'rafamadriz/friendly-snippets',
       'onsails/lspkind.nvim',
       'mikavilpas/blink-ripgrep.nvim',
-      'dmitmel/cmp-digraphs',
-      "chrisgrieser/cmp-nerdfont",
+      "MahanRahmati/blink-nerdfont.nvim",
+      "alexandre-abrioux/blink-cmp-npm.nvim",
+      "moyiz/blink-emoji.nvim",
+      'ribru17/blink-cmp-spell',
+      'archie-judd/blink-cmp-words',
       { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
     },
     -- use a release tag to download pre-built binaries
@@ -133,47 +113,103 @@ return {
         default = function()
           local success, node = pcall(vim.treesitter.get_node)
           if success and node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
-            return { 'buffer', 'digraphs' }
+            return { 'buffer', 'emoji', 'dictionary', 'thesaurus' }
           end
 
           if vim.tbl_contains({ "sql", "mysql", "plsql", "dbui" }, vim.bo.filetype) then
-            vim.print("Activated dadbod completions")
             return { 'dadbod', 'buffer', 'snippets' }
           end
 
           local default = {
-            "dadbod",
             'lsp',
+            "dadbod",
             'buffer',
+            "spell",
             'path',
             "ripgrep",
-            "nerdfont",
-            -- "digraphs"
-            -- 'snippets',
+            "emoji",
+            -- "nerdfont",
           }
           return default
         end,
         providers = {
+          lsp = {
+            name = 'LSP',
+            module = 'blink.cmp.sources.lsp',
+            opts = {},
+            enabled = true,
+            async = true,
+            fallbacks = { "buffer" }
+          },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           nerdfont = {
-            name = 'nerdfont',
-            module = 'blink.compat.source'
+            module = "blink-nerdfont",
+            name = "Nerd Fonts",
+            score_offset = 15, -- Tune by preference
+            opts = { insert = true }, -- Insert nerdfont icon (default) or complete its name
           },
-          digraphs = {
-            name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
-            module = 'blink.compat.source',
-
-            -- all blink.cmp source config options work as normal:
-            score_offset = -3,
-
-            -- this table is passed directly to the proxied completion source
-            -- as the `option` field in nvim-cmp's source config
-            --
-            -- this is NOT the same as the opts in a plugin's lazy.nvim spec
+          npm = {
+            name = "npm",
+            module = "blink-cmp-npm",
+            async = true,
+            -- the options below are optional
+            ---@module "blink-cmp-npm"
+            ---@type blink-cmp-npm.Options
             opts = {
-              -- this is an option from cmp-digraphs
-              cache_digraphs_on_start = true,
+              ignore = {},
+              only_semantic_versions = true,
+              only_latest_version = false,
+              trailing_slash = true,
+              label_trailing_slash = true,
+              show_hidden_files_by_default = true
+            }
+          },
+          spell = {
+            name = 'Spell',
+            module = 'blink-cmp-spell',
+            opts = {
+              use_cmp_spell_sorting = true
             },
+          },
+          -- Use the thesaurus source
+          thesaurus = {
+            name = "blink-cmp-words",
+            module = "blink-cmp-words.thesaurus",
+            -- All available options
+            opts = {
+              -- A score offset applied to returned items. 
+              -- By default the highest score is 0 (item 1 has a score of -1, item 2 of -2 etc..).
+              score_offset = 0,
+
+              -- Default pointers define the lexical relations listed under each definition,
+              -- see Pointer Symbols below.
+              -- Default is as below ("antonyms", "similar to" and "also see").
+              pointer_symbols = { "!", "&", "^" },
+            },
+          },
+          -- Use the dictionary source
+          dictionary = {
+            name = "blink-cmp-words",
+            module = "blink-cmp-words.dictionary",
+            -- All available options
+            opts = {
+              -- The number of characters required to trigger completion. 
+              -- Set this higher if completion is slow, 3 is default.
+              dictionary_search_threshold = 3,
+
+              -- See above
+              score_offset = 0,
+
+              -- See above
+              pointer_symbols = { "!", "&", "^" },
+            },
+          },
+          emoji = {
+            module = "blink-emoji",
+            name = "Emoji",
+            score_offset = 15, -- Tune by preference
+            opts = { insert = true }, -- Insert emoji (default) or complete its name
+            -- happy 
           },
           ripgrep = {
             module = "blink-ripgrep",
@@ -189,19 +225,6 @@ return {
               -- (if the word is shorter than this, the search will not start)
               prefix_min_len = 3,
 
-              -- The number of lines to show around each match in the preview
-              -- (documentation) window. For example, 5 means to show 5 lines
-              -- before, then the match, and another 5 lines after the match.
-              context_size = 3,
-
-              -- The maximum file size of a file that ripgrep should include in
-              -- its search. Useful when your project contains large files that
-              -- might cause performance issues.
-              -- Examples:
-              -- "1024" (bytes by default), "200K", "1M", "1G", which will
-              -- exclude files larger than that size.
-              max_filesize = "1M",
-
               -- Specifies how to find the root of the project where the ripgrep
               -- search will start from. Accepts the same options as the marker
               -- given to `:h vim.fs.root()` which offers many possibilities for
@@ -212,19 +235,38 @@ return {
               -- - { ".git", "package.json", ".root" }
               project_root_marker = ".git",
 
-              -- The casing to use for the search in a format that ripgrep
-              -- accepts. Defaults to "--ignore-case". See `rg --help` for all the
-              -- available options ripgrep supports, but you can try
-              -- "--case-sensitive" or "--smart-case".
-              search_casing = "--ignore-case",
+              backend = {
+                use = "ripgrep",
 
-              -- (advanced) Any additional options you want to give to ripgrep.
-              -- See `rg -h` for a list of all available options. Might be
-              -- helpful in adjusting performance in specific situations.
-              -- If you have an idea for a default, please open an issue!
-              --
-              -- Not everything will work (obviously).
-              additional_rg_options = {},
+                ripgrep = {
+                  -- (advanced) Any additional options you want to give to ripgrep.
+                  -- See `rg -h` for a list of all available options. Might be
+                  -- helpful in adjusting performance in specific situations.
+                  -- If you have an idea for a default, please open an issue!
+                  --
+                  -- Not everything will work (obviously).
+                  additional_rg_options = {},
+                },
+
+                -- The number of lines to show around each match in the preview
+                -- (documentation) window. For example, 5 means to show 5 lines
+                -- before, then the match, and another 5 lines after the match.
+                context_size = 3,
+
+                -- The maximum file size of a file that ripgrep should include in
+                -- its search. Useful when your project contains large files that
+                -- might cause performance issues.
+                -- Examples:
+                -- "1024" (bytes by default), "200K", "1M", "1G", which will
+                -- exclude files larger than that size.
+                max_filesize = "1M",
+
+                -- The casing to use for the search in a format that ripgrep
+                -- accepts. Defaults to "--ignore-case". See `rg --help` for all the
+                -- available options ripgrep supports, but you can try
+                -- "--case-sensitive" or "--smart-case".
+                search_casing = "--smart-case",
+              },
 
               -- When a result is found for a file whose filetype does not have a
               -- treesitter parser installed, fall back to regex based highlighting
@@ -246,15 +288,15 @@ return {
             -- (optional) customize how the results are displayed. Many options
             -- are available - make sure your lua LSP is set up so you get
             -- autocompletion help
-            transform_items = function(_, items)
-              for _, item in ipairs(items) do
-                -- example: append a description to easily distinguish rg results
-                item.labelDetails = {
-                  description = "(proj)",
-                }
-              end
-              return items
-            end,
+            -- transform_items = function(_, items)
+            --   for _, item in ipairs(items) do
+            --     -- example: append a description to easily distinguish rg results
+            --     item.labelDetails = {
+            --       description = "(proj)",
+            --     }
+            --   end
+            --   return items
+            -- end,
           },
         }
       },

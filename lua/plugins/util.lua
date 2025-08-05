@@ -51,7 +51,7 @@ return {
       vim.cmd([[
          let g:yoinkIncludeDeleteOperations = 1
          let g:yoinkSyncSystemClipboardOnFocus = 0
-         let g:yoinkAutoFormatPaste = 1
+         let g:yoinkAutoFormatPaste = 0
       ]])
     end
   },

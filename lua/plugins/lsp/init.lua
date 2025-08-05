@@ -7,8 +7,8 @@ return {
       "b0o/schemastore.nvim",
       version = false,
       { "folke/neodev.nvim", opts = {} },
-      "mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
     },
     opts = {
       -- ui
@@ -16,43 +16,34 @@ return {
       -- options for vim.diagnostic.config()
       diagnostics = {
         -- Only underline the real error
-        -- underline = {
-        --   severity = vim.diagnostic.severity.ERROR,
-        -- },
+        underline = {
+          severity = {min = vim.diagnostic.severity.INFO },
+        },
         update_in_insert = false,
-        virtual_lines = {
-          current_line = true,
-          format = function (diagnostic)
-              return diagnostic.message
-            -- local icons = require("lazyvim.config").icons.diagnostics
-            -- for d, icon in pairs(icons) do
-            --   if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-            --     return icon .. " " .. diagnostic.message
-            --   end
-            --   return diagnostic.message
-            -- end
-          end
-        },
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '',
-            [vim.diagnostic.severity.WARN] = '',
-            [vim.diagnostic.severity.HINT] = '',
-            [vim.diagnostic.severity.INFO] = '',
-          },
-          linehl = {
-            [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
-          },
-        },
-        virtual_text = false,
-        -- virtual_text = {
-        --   spacing = 4,
-        --   source = "if_many",
-        --   -- prefix = "●",
-        --   -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-        --   -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-        --   prefix = "icons",
+        -- virtual_lines = {
+        --   current_line = true,
+        --   format = function (diagnostic)
+        --       return diagnostic.message
+        --     -- local icons = require("lazyvim.config").icons.diagnostics
+        --     -- for d, icon in pairs(icons) do
+        --     --   if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+        --     --     return icon .. " " .. diagnostic.message
+        --     --   end
+        --     --   return diagnostic.message
+        --     -- end
+        --   end
         -- },
+        signs = false,
+        -- virtual_text = false,
+        virtual_text = {
+          spacing = 4,
+          source = "if_many",
+          current_line = true,
+          prefix = "●",
+          -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+          -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+          prefix = "icons",
+        },
         float = false,
         -- float = {
         --   border = "single",
@@ -207,11 +198,11 @@ return {
         require("lspconfig")[server].setup(server_opts)
       end
 
-      -- get all the servers that are available thourgh mason-lspconfig
+      -- get all the servers that are available on mason-lspconfig
       local have_mason, mlsp = pcall(require, "mason-lspconfig")
       local all_mslp_servers = {}
       if have_mason then
-        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+        -- require("mason-lspconfig").setup()
       end
 
       local ensure_installed = {} ---@type string[]
@@ -228,7 +219,11 @@ return {
       end
 
       if have_mason then
-        mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
+        mlsp.setup({
+          automatic_enable = true,
+          ensure_installed = ensure_installed,
+          handlers = { setup },
+        })
       end
 
       if Util.lsp_get_config("denols") and Util.lsp_get_config("ts_ls") then
@@ -245,7 +240,7 @@ return {
   {
     "nvimtools/none-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "mason.nvim" },
+    dependencies = { "mason-org/mason.nvim" },
     opts = function()
       local nls = require("null-ls")
       return {
@@ -260,7 +255,7 @@ return {
 
   -- cmdline tools and lsp servers
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     build = ":MasonUpdate",

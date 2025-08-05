@@ -55,9 +55,6 @@ return {
       { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
       { "<leader>fR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent (cwd)" },
-      -- git
-      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
       -- search
       { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
       { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
@@ -302,6 +299,15 @@ return {
         changedelete = { text = "▎" },
         untracked = { text = "▎" },
       },
+      signs_staged = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
+      },
+      signs_staged_enable = true,
       word_diff = false,
       current_line_blame = true,
       on_attach = function(buffer)
@@ -310,17 +316,17 @@ return {
           vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
         end
 
-        -- stylua: ignore start
         map("n", "]h", gs.next_hunk, "Next Hunk")
         map("n", "[h", gs.prev_hunk, "Prev Hunk")
-        -- May or may be not usefull, I have to advance my git understanding and flow
-        -- map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+        map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+        map("n", "<leader>gu", gs.undo_stage_hunk, "Undo Stage Hunk")
+        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+
+        -- May or may be not useful, I have to advance my git understanding and flow
         -- map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         -- map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        -- map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
         -- map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
         -- map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        -- map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
         -- map("n", "<leader>ghd", gs.diffthis, "Diff This")
         -- map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
         -- map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
