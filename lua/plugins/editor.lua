@@ -304,6 +304,9 @@ return {
       signs_staged_enable = true,
       word_diff = true,
       current_line_blame = true,
+      current_line_blame_opts = {
+        delay = 150,
+      },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
         local function map(mode, l, r, desc)
@@ -322,6 +325,24 @@ return {
         -- map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     },
+    config = function(_, opts)
+      -- Setup gitsigns with the provided options
+      require("gitsigns").setup(opts)
+
+      -- Define less invasive inline highlight colors for the gruvbox theme
+      vim.api.nvim_set_hl(0, "GitSignsAddInline", {
+        fg = "#b8bb26",   -- muted green
+        bg = "#3c3836",   -- dark gray background
+      })
+      vim.api.nvim_set_hl(0, "GitSignsChangeInline", {
+        fg = "#d79921",   -- muted yellow
+        bg = "#504945",   -- medium gray background
+      })
+      vim.api.nvim_set_hl(0, "GitSignsDeleteInline", {
+        fg = "#fb4934",   -- muted red
+        bg = "#282828",   -- base background
+      })
+    end,
   },
   -- Automatically highlights other instances of the word under your cursor.
   -- This works with LSP, Treesitter, and regexp matching to find the other

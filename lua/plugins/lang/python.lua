@@ -12,13 +12,6 @@ return {
     opts = {
       servers = {
         pyright = {},
-        -- basedpyright = {
-        --   analysis = {
-        --     autoSearchPaths = true,
-        --     diagnosticMode = "openFilesOnly",
-        --     useLibraryCodeForTypes = true
-        --   }
-        -- },
         ruff = {},
       },
     },
@@ -27,26 +20,15 @@ return {
         require("lazyvim.util").on_attach(function(client, _)
           if client.name == "ruff" then
             -- Disable hover in favor of Pyright
-            client.server_capabilities.hoverProvider = false
+            -- client.server_capabilities.hoverProvider = false
           end
         end)
       end,
     },
   },
   {
-    "nvim-neotest/neotest",
-    optional = true,
-    dependencies = {
-      "nvim-neotest/neotest-python",
-    },
-    opts = {
-      adapters = {
-        ["neotest-python"] = {
-          -- Here you can specify the settings for the adapter, i.e.
-          -- runner = "pytest",
-          -- python = ".venv/bin/python",
-        },
-      },
-    },
+    "neolooong/whichpy.nvim",
+    dependencies = {},
+    opts = {},
   },
 }
